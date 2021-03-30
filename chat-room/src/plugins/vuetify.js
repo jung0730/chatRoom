@@ -1,7 +1,24 @@
 import Vue from "vue";
-import Vuetify from "vuetify";
-// default會出現Unknown custom element
-// import Vuetify from 'vuetify/lib/framework'
+import Vuetify from "vuetify/lib";
 Vue.use(Vuetify);
 
-export default new Vuetify({});
+export default new Vuetify({
+  theme: {
+    themes: {
+      light: {
+        primary: '#0DA0D8',
+        primaryDark: '#097BBD',
+        secondary: '#fdf460',
+        accent: '#82B1FF',
+        error: '#B00020',
+        info: '#2196F3',
+        success: '#4CAF50',
+        warning: '#FFC107',
+        normal: '#757575'
+      }
+    }
+  },
+  icons: {
+    iconfont: 'mdi'
+  }
+})
