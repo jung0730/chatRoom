@@ -11,7 +11,8 @@
              offset="3">
         <v-text-field placeholder="Please enter your username"
           outlined
-          clearable />
+          clearable
+          v-model="userName" />
       </v-col>
       <v-col>
         <v-btn
@@ -39,11 +40,11 @@ export default {
   computed: {},
   methods: {
     async login() {
-      if (userName) {
+      if (this.userName) {
         try {
           this.isLoading = true
           const result = await this.$store.dispatch('Environment/login', {
-            nickname: this.username
+            nickname: this.userName
           })
         } catch (e) {}
       }

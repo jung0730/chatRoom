@@ -1,8 +1,8 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import Environment from "./modules/Environment"
+import Vue from 'vue'
+import Vuex from 'vuex'
+import Environment from './modules/Environment'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {},
@@ -10,5 +10,5 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     Environment
-  },
-});
+  }
+})
