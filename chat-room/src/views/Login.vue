@@ -9,8 +9,7 @@
       </v-col>
       <v-col cols="5"
              offset="3">
-        <v-text-field
-          placeholder="Please enter your username"
+        <v-text-field placeholder="Please enter your username"
           outlined
           clearable />
       </v-col>
@@ -21,8 +20,9 @@
           large
           depressed
           :disabled="isLoading"
-          @click.prevent="login" />
+          @click.prevent="login">
           Login
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
