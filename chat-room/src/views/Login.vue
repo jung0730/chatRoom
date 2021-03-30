@@ -1,36 +1,30 @@
 <template>
-  <v-container
-    fluid
-    fill-height
-    class="login-container">
-      <v-row
-        justify="center">
-        <v-col
-          cols="12">
-          <img
-            src="~@/assets/login.svg"
-            class="mr-auto ml-auto d-flex">
-        </v-col>
-        <v-col
-          cols="5"
-          offset="3">
-          <v-text-field
-            placeholder="Please enter your username"
-            outlined
-            clearable>
-          </v-text-field>
-        </v-col>
-        <v-col>
-          <v-btn
-            class="mt-1"
-            color="primary"
-            large
-            depressed
-            @click.prevent="sendLoginRequest">
-            Login
-          </v-btn>
-        </v-col>
-      </v-row>
+  <v-container fluid
+               fill-height
+               class="login-container">
+    <v-row justify="center">
+      <v-col cols="12">
+        <img src="~@/assets/login.svg"
+             class="mr-auto ml-auto d-flex">
+      </v-col>
+      <v-col cols="5"
+             offset="3">
+        <v-text-field
+          placeholder="Please enter your username"
+          outlined
+          clearable />
+      </v-col>
+      <v-col>
+        <v-btn
+          class="mt-1"
+          color="primary"
+          large
+          depressed
+          :disabled="isLoading"
+          @click.prevent="login" />
+          Login
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -38,21 +32,27 @@ export default {
   name: 'Login',
   data() {
     return {
-      userName: ''
+      userName: '',
+      isLoading: false
     }
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
-    sendLoginRequest() {
-
+    async login() {
+      if (userName) {
+        try {
+          this.isLoading = true
+          const result = await this.$store.dispatch('Environment/login', {
+            nickname: this.username
+          })
+        } catch (e) {}
+      }
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .login-container {
-  background: linear-gradient(to bottom right, #FFFFFF 55%, #0DA0D8);
+  background: linear-gradient(to bottom right, #ffffff 55%, #0da0d8);
 }
 </style>
