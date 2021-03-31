@@ -5,7 +5,7 @@
     <v-row justify="center">
       <v-col cols="12">
         <img src="~@/assets/login.svg"
-             class="mr-auto ml-auto d-flex">
+             class="mx-auto d-flex">
       </v-col>
       <v-col cols="5"
              offset="3">
