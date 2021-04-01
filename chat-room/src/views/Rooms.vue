@@ -3,7 +3,8 @@
                  class="rooms-container">
       <v-row justify="end">
         <v-col cols="6"
-               class="col-sm-6 col-md-2">
+               sm="6"
+               md="2">
           <v-text-field label="Search"
                         append-icon="mdi-magnify"/>
         </v-col>
@@ -21,7 +22,8 @@
       <v-row justify="center"
              class="mt-16">
         <v-col cols="10"
-               class="col-sm-7 col-md-4">
+               sm="7"
+               md="4">
           <v-card v-for="(card, idx) in cards"
                   :key="idx"
                   elevation="2"
