@@ -31,14 +31,13 @@
             <v-card-title>{{ card.title }}</v-card-title>
             <v-card-text>
               Hosted by {{ card.host }}
-              <v-btn
-                  color="primary"
-                  class="add-button"
-                  dark
-                  absolute
-                  right
-                  small
-                  fab>
+              <v-btn color="primary"
+                     class="add-button"
+                     dark
+                     absolute
+                     right
+                     small
+                     fab>
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-card-text>
@@ -84,7 +83,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .rooms-container {
-  min-height: 100%;
+  height: 100%;
   background: #f5f5f5;
   background-image: url('~@/assets/rooms.svg');
   background-repeat: no-repeat;

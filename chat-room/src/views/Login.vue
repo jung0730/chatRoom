@@ -53,7 +53,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .login-container {
-  min-height: 100%;
+  height: 100%;
   background: linear-gradient(to bottom right, #ffffff 55%, #0da0d8);
 }
 </style>
