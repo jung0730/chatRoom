@@ -1,6 +1,6 @@
-import Vue from "vue";
-import Vuetify from "vuetify/lib";
-Vue.use(Vuetify);
+import Vue from 'vue'
+import Vuetify from 'vuetify/lib'
+Vue.use(Vuetify)
 
 export default new Vuetify({
   theme: {
@@ -9,6 +9,7 @@ export default new Vuetify({
         primary: '#0DA0D8',
         primaryDark: '#097BBD',
         secondary: '#fdf460',
+        secondaryDark: '#EFBA05',
         accent: '#82B1FF',
         error: '#B00020',
         info: '#2196F3',
