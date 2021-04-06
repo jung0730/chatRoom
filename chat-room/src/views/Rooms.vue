@@ -1,50 +1,80 @@
 <template>
-    <v-container fluid
-                 class="rooms-container">
-      <v-row justify="end">
-        <v-col cols="6"
-               sm="6"
-               md="2">
-          <v-text-field label="Search"
-                        append-icon="mdi-magnify"/>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-          <v-btn
-            color="primary"
-            large
-            depressed
-            :disabled="isLoading"
-            @click.prevent="addRoom">
+  <v-container fluid
+               class="rooms-container">
+    <v-row justify="end">
+      <v-col cols="6"
+             sm="6"
+             md="2">
+        <v-text-field label="Search"
+                      append-icon="mdi-magnify" />
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-dialog v-model="isShowDialog"
+                width="600"
+                overlay-opacity="0.9">
+        <template v-slot:activator="{ on, attrs}">
+          <v-btn color="primary"
+                 large
+                 depressed
+                 v-bind="attrs"
+                 v-on="on">
             Start a room
           </v-btn>
-      </v-row>
-      <v-row justify="center"
-             class="mt-16">
-        <v-col cols="10"
-               sm="7"
-               md="4">
-          <v-card v-for="(card, idx) in cards"
-                  :key="idx"
-                  elevation="2"
-                  class="mx-auto mb-8 card-deco">
-            <v-card-title>{{ card.title }}</v-card-title>
-            <v-card-text>
-              Hosted by {{ card.host }}
-              <v-btn color="primary"
-                     class="add-button"
-                     dark
-                     absolute
-                     right
-                     small
-                     fab>
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+        </template>
+        <v-card>
+          <v-card-title>
+            + Add a Topic
+          </v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field v-model="topicName"
+                              outlined
+                              clearable />
+              </v-col>
+              <v-col cols="3">
+                <v-btn class="mt-1 ml-1"
+                       color="primary"
+                       large
+                       depressed
+                       @click.prevent="addHandler">
+                  Let's go!
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </v-row>
+    <v-row justify="center"
+           class="mt-16">
+      <v-col cols="10"
+             sm="7"
+             md="4">
+        <v-card v-for="(card, idx) in cards"
+                :key="idx"
+                elevation="2"
+                class="mx-auto mb-8 card-deco">
+          <v-card-title>
+            {{ card.title }}
+          </v-card-title>
+          <v-card-text>
+            Hosted by {{ card.host }}
+            <v-btn color="primary"
+                   class="add-button"
+                   dark
+                   absolute
+                   right
+                   small
+                   fab>
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <script>
 export default {
@@ -71,12 +101,15 @@ export default {
           title: 'Title 5 test',
           host: 'Wei'
         }
-      ]
+      ],
+      topicName: '',
+      isShowDialog: false
     }
   },
   methods: {
-    addRoom() {
-
+    addHandler() {
+      this.isShowDialog = false
+      // 打api
     }
   }
 }
@@ -121,5 +154,8 @@ export default {
 }
 .add-button {
   transform: translateY(-30px);
+}
+.v-dialog__content {
+  align-items: flex-start
 }
 </style>
