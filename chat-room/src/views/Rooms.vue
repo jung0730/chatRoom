@@ -23,14 +23,18 @@
           </v-btn>
         </template>
         <v-card>
-          <v-card-title>
-            + Add a Topic
-          </v-card-title>
           <v-card-text>
+            <v-row class="mx-auto"
+                   style="width:100%">
+              <v-select v-model="topicName"
+                        :items="topics"
+                        class="mt-6"
+                        label="Topic Category" />
+            </v-row>
             <v-row>
               <v-col cols="8">
-                <v-text-field v-model="topicName"
-                              outlined
+                <v-text-field v-model="roomName"
+                              label="Room Name"
                               clearable />
               </v-col>
               <v-col cols="3">
@@ -103,7 +107,14 @@ export default {
         }
       ],
       topicName: '',
-      isShowDialog: false
+      roomName: '',
+      isShowDialog: false,
+      topics: [
+        'Finance',
+        'Science',
+        'Language',
+        'Technology'
+      ]
     }
   },
   methods: {
