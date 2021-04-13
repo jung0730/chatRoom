@@ -2,6 +2,15 @@
   <v-container fluid
                class="room-container">
     <v-container class="chat-container">
+      <v-btn elevation="4"
+             absolute
+             left
+             dark
+             color="normal"
+             class="leave-button"
+             fab>
+        Leave
+      </v-btn>
       <div class="message-area">
         <v-row>
           <v-col cols="6">
@@ -36,16 +45,15 @@
           </v-col>
         </v-row>
       </div>
-      <v-row class="send-area">
-        <v-text-field v-model="message"
-                    class="send-area"
-                    background-color="white"
-                    hide-details
-                    height="100"
-                    placeholder="Enter messages..."
-                    @keyup.enter.native="sendHandler">
-        </v-text-field>
-      </v-row>
+      <form>
+        <div contenteditable="true"
+             spellcheck="true"
+             role="textbox"
+             data-placeholder="Enter messages..."
+             class="message-container">
+          <span>test</span>
+        </div>
+      </form>
     </v-container>
   </v-container>
 </template>
@@ -61,8 +69,10 @@ export default {
   },
   methods: {
     sendHandler() {
-      this.messages.push(this.message)
-      this.message = ''
+      if (this.message) {
+        this.messages.push(this.message)
+        this.message = ''
+      }
     }
   }
 }
@@ -74,56 +84,61 @@ export default {
 }
 .chat-container {
   max-width: 64rem;
-  height: 100%;
-  background: #097BBD;
+  background: #ffffff;
   opacity: 0.8;
   border-radius: 1rem;
   position: relative;
+  box-shadow: 20px 20px 50px #d9d9d9, -20px -20px 50px #ffffff;
 }
 .message-area {
-  overflow: hidden;
-  height: calc(100vh - 190px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: calc(100vh - 150px);
+}
+.left-dialog, .right-dialog {
+  &-box {
+    display: flex;
+  }
+  &-message {
+    color: #FFFFFF;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    min-width: 2rem;
+  }
 }
 .left-dialog {
   &-box {
-    display: flex;
     align-items: baseline;
   }
   &-message {
-    background-color: white;
-    color: #573D01;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    &::before {
-      content: '';
-      width: 0; 
-      height: 0; 
-      border-top: 1rem solid white;
-      border-left: 1rem solid transparent;
-      position: absolute;
-      left: 72px;
-    }
+    background-color: #097BBD;
   }
 }
 .right-dialog {
   &-box {
-    display: flex;
     justify-content: flex-end;
   }
   &-message {
-    background-color: white;
-    color: #573D01;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    &::after {
-      content: '';
-      width: 0; 
-      height: 0; 
-      border-top: 1rem solid white;
-      border-right: 1rem solid transparent;
-      position: absolute;
-      right: 0
-    }
+    background-color: #0DA0DB;    
+  }
+}
+.leave-button {
+  top: 50%;
+  transform: translate(-100%, -50%)
+}
+.message-container {
+  width: 100%;
+  height: 100px;
+  outline: none;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  border: 2px solid #097BBD;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  &::before {
+    content: attr(data-placeholder);
+    color: gray;
   }
 }
 </style>
