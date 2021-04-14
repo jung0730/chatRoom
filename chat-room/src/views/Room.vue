@@ -46,19 +46,17 @@
         </v-row>
       </div>
       <form>
-        <div contenteditable="true"
-             spellcheck="true"
-             role="textbox"
-             data-placeholder="Enter messages..."
-             class="message-container">
-          <span>test</span>
-        </div>
+        <editable-div v-model="message" />
       </form>
     </v-container>
   </v-container>
 </template>
 <script>
+import EditableDiv from '@/components/EditableDiv'
 export default {
+  components: {
+    EditableDiv
+  },
   data() {
     return {
       messages: [],
@@ -126,19 +124,5 @@ export default {
 .leave-button {
   top: 50%;
   transform: translate(-100%, -50%)
-}
-.message-container {
-  width: 100%;
-  height: 100px;
-  outline: none;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  border: 2px solid #097BBD;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  &::before {
-    content: attr(data-placeholder);
-    color: gray;
-  }
 }
 </style>
