@@ -38,6 +38,8 @@ export default {
   border: 2px solid #097BBD;
   padding: 0.5rem;
   border-radius: 0.5rem;
+  display: inline-block;
+  overflow-y: scroll
 }
 .message-container:empty::before {
   content: attr(data-placeholder);
