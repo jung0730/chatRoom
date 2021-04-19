@@ -12,6 +12,3 @@ export default {
   })
 }
 </script>
-<style lang="scss" scoped>
-// todo: reset body margin
-</style>
