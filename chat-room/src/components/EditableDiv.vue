@@ -1,13 +1,15 @@
 <template>
-  <div contenteditable="true"
+  <div ref="contentEditable"
+       contenteditable="true"
        spellcheck="true"
        role="textbox"
        data-placeholder="Enter messages..."
        class="message-container"
-       :value="innerText"
+       :value="value"
        @input="changeText" />
 </template>
 <script>
+// ref: https://github.com/Cobertos/vue-input-contenteditable/blob/master/src/input-contenteditable.vue
 export default {
   props: {
     value: {
@@ -15,15 +17,16 @@ export default {
       default: ''
     }
   },
-  data() {
-    return {
-      innerText: this.value
+  watch: {
+    value() {
+      if (this.value !== this.$refs.contentEditable.innerText) {
+        this.$refs.contentEditable.textContent = this.value
+      }
     }
   },
   methods: {
     changeText() {
-      this.innerText = this.$el.innerHTML
-      this.$emit('input', this.innerText)
+      this.$emit('input', this.$refs.contentEditable.textContent)
     }
   }
 }

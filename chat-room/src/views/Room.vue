@@ -47,6 +47,17 @@
       </div>
       <form>
         <editable-div v-model="message" />
+        <v-btn class="mx-2 send-button"
+               fab
+               dark
+               small
+               absolute
+               color="secondaryDark"
+               @click="sendHandler">
+          <v-icon>
+            mdi-send
+          </v-icon>
+        </v-btn>
       </form>
     </v-container>
   </v-container>
@@ -124,5 +135,9 @@ export default {
 .leave-button {
   top: 50%;
   transform: translate(-100%, -50%)
+}
+.send-button {
+  right: 10px;
+  transform: translateY(50%)
 }
 </style>
