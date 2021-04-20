@@ -34,7 +34,7 @@ export default {
 <style lang="scss" scoped>
 .message-container {
   width: 100%;
-  height: 100px;
+  height: 80px;
   outline: none;
   white-space: pre-wrap;
   overflow-wrap: break-word;
@@ -42,7 +42,7 @@ export default {
   padding: 0.5rem;
   border-radius: 0.5rem;
   display: inline-block;
-  overflow-y: scroll
+  overflow-x: hidden;
 }
 .message-container:empty::before {
   content: attr(data-placeholder);
