@@ -11,7 +11,8 @@
              fab>
         Leave
       </v-btn>
-      <div class="message-area">
+      <div ref="messageArea"
+           class="message-area">
         <v-row>
           <v-col cols="6">
             <div class="left-dialog-box">
@@ -74,14 +75,18 @@ export default {
       message: ''
     }
   },
-  updated() {
-  },
   methods: {
     sendHandler() {
       if (this.message) {
         this.messages.push(this.message)
         this.message = ''
+        this.$nextTick(() => {
+          this.scrollToBottom()
+        })
       }
+    },
+    scrollToBottom() {
+      this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
     }
   }
 }
@@ -101,7 +106,6 @@ export default {
 }
 .message-area {
   overflow-x: hidden;
-  overflow-y: scroll;
   height: calc(100vh - 150px);
 }
 .left-dialog, .right-dialog {
