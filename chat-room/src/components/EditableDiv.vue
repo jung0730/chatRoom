@@ -7,7 +7,10 @@
        class="message-container"
        :value="value"
        @keydown.enter="captureEnterEvent"
-       @input="changeText" />
+       @input="changeText"
+       @dragenter.stop.prevent="cancelDefault"
+       @dragover.stop.prevent="cancelDefault"
+       @drop.stop.prevent="drop" />
 </template>
 <script>
 // ref: https://github.com/Cobertos/vue-input-contenteditable/blob/master/src/input-contenteditable.vue
@@ -34,6 +37,14 @@ export default {
         e.preventDefault()
         this.$emit('enter')
       }
+    },
+    drop(e) {
+      e.dataTransfer.files.forEach(file => {
+        this.$emit('send-files', file)
+      })
+    },
+    cancelDefault(e) {
+      return false
     }
   }
 }

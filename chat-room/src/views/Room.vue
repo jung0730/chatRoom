@@ -48,7 +48,8 @@
       </div>
       <form>
         <editable-div v-model="message"
-                      @enter="sendHandler" />
+                      @enter="sendHandler"
+                      @send-files="sendFileHandler" />
       </form>
     </v-container>
   </v-container>
@@ -66,10 +67,11 @@ export default {
     }
   },
   methods: {
+    sendFileHandler(file) {
+      console.log(file)
+    },
     sendHandler() {
       if (this.message) {
-        // const newMessage = this.message.replace(/(?:\r\n|\r|\n)/g, '<br />')
-        // console.log(newMessage)
         this.messages.push(this.message)
         this.message = ''
         this.$nextTick(() => {
