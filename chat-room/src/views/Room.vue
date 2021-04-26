@@ -39,26 +39,16 @@
                  :key="idx"
                  cols="12">
             <div class="right-dialog-box">
-              <p class="right-dialog-message">
-                {{ item }}
-              </p>
+              <div class="right-dialog-message">
+                <span>{{ item }}</span>
+              </div>
             </div>
           </v-col>
         </v-row>
       </div>
       <form>
-        <editable-div v-model="message" />
-        <v-btn class="mx-2 send-button"
-               fab
-               dark
-               small
-               absolute
-               color="secondaryDark"
-               @click="sendHandler">
-          <v-icon>
-            mdi-send
-          </v-icon>
-        </v-btn>
+        <editable-div v-model="message"
+                      @enter="sendHandler" />
       </form>
     </v-container>
   </v-container>
@@ -78,6 +68,8 @@ export default {
   methods: {
     sendHandler() {
       if (this.message) {
+        // const newMessage = this.message.replace(/(?:\r\n|\r|\n)/g, '<br />')
+        // console.log(newMessage)
         this.messages.push(this.message)
         this.message = ''
         this.$nextTick(() => {
@@ -116,8 +108,9 @@ export default {
     color: #FFFFFF;
     border-radius: 1rem;
     padding: 0.5rem;
-    text-align: center;
+    text-align: justify;
     min-width: 2rem;
+    white-space: pre-wrap;
   }
 }
 .left-dialog {
@@ -139,9 +132,5 @@ export default {
 .leave-button {
   top: 50%;
   transform: translate(-100%, -50%)
-}
-.send-button {
-  right: 10px;
-  transform: translateY(50%)
 }
 </style>

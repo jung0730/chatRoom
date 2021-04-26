@@ -6,6 +6,7 @@
        data-placeholder="Enter messages..."
        class="message-container"
        :value="value"
+       @keydown.enter="captureEnterEvent"
        @input="changeText" />
 </template>
 <script>
@@ -27,6 +28,12 @@ export default {
   methods: {
     changeText() {
       this.$emit('input', this.$refs.contentEditable.textContent)
+    },
+    captureEnterEvent(e) {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        e.preventDefault()
+        this.$emit('enter')
+      }
     }
   }
 }
@@ -36,7 +43,7 @@ export default {
   width: 100%;
   height: 80px;
   outline: none;
-  white-space: pre-wrap;
+  white-space: pre-line;
   overflow-wrap: break-word;
   border: 2px solid #097BBD;
   padding: 0.5rem;
