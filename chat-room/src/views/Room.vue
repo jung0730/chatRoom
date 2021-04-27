@@ -40,14 +40,21 @@
                  cols="12">
             <div class="right-dialog-box">
               <div class="right-dialog-message">
-                <span>{{ item }}</span>
+                <div v-if="Array.isArray(item)">
+                  <div v-for="(file, idx) in item"
+                       :key="idx">
+                    <img :src="file">
+                  </div>
+                </div>
+                <span v-else>{{ item }}</span>
               </div>
             </div>
           </v-col>
         </v-row>
       </div>
       <form>
-        <editable-div v-model="message"
+        <editable-div v-model.trim="message"
+                      ref="editableComponent"
                       @enter="sendHandler"
                       @send-files="sendFileHandler" />
       </form>
@@ -70,14 +77,13 @@ export default {
     sendFileHandler(file) {
       console.log(file)
     },
-    sendHandler() {
-      if (this.message) {
-        this.messages.push(this.message)
-        this.message = ''
-        this.$nextTick(() => {
-          this.scrollToBottom()
-        })
-      }
+    sendHandler(files) {
+      if (this.message) this.messages.push(this.message)
+      if (files.length > 0) this.messages.push(files)
+      this.message = ''
+      this.$nextTick(() => {
+        this.scrollToBottom()
+      })
     },
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
@@ -134,5 +140,9 @@ export default {
 .leave-button {
   top: 50%;
   transform: translate(-100%, -50%)
+}
+img {
+  width: 15rem;
+  object-fit: cover;
 }
 </style>

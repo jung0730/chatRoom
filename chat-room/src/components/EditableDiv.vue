@@ -1,16 +1,24 @@
 <template>
-  <div ref="contentEditable"
-       contenteditable="true"
-       spellcheck="true"
-       role="textbox"
-       data-placeholder="Enter messages..."
-       class="message-container"
-       :value="value"
-       @keydown.enter="captureEnterEvent"
-       @input="changeText"
-       @dragenter.stop.prevent="cancelDefault"
-       @dragover.stop.prevent="cancelDefault"
-       @drop.stop.prevent="drop" />
+  <div class="outer-container">
+    <div class="preview-files">
+      <div v-for="(file, idx) in previewFiles"
+           :key="idx">
+        <img :src="file">
+      </div>
+    </div>
+    <div ref="contentEditable"
+         contenteditable="true"
+         spellcheck="true"
+         role="textbox"
+         data-placeholder="Enter messages..."
+         class="message"
+         :value="value"
+         @keydown.enter="captureEnterEvent"
+         @input="changeText"
+         @dragenter.stop.prevent="cancelDefault"
+         @dragover.stop.prevent="cancelDefault"
+         @drop.stop.prevent="drop" />
+  </div>
 </template>
 <script>
 // ref: https://github.com/Cobertos/vue-input-contenteditable/blob/master/src/input-contenteditable.vue
@@ -19,6 +27,11 @@ export default {
     value: {
       type: String,
       default: ''
+    }
+  },
+  data() {
+    return {
+      previewFiles: []
     }
   },
   watch: {
@@ -35,12 +48,17 @@ export default {
     captureEnterEvent(e) {
       if (e.keyCode === 13 && !e.shiftKey) {
         e.preventDefault()
-        this.$emit('enter')
+        const files = [...this.previewFiles]
+        this.$emit('enter', files)
+        this.previewFiles.splice(0)
       }
     },
     drop(e) {
       e.dataTransfer.files.forEach(file => {
-        this.$emit('send-files', file)
+        if (file.type.includes('image')) {
+          const objectURL = URL.createObjectURL(file)
+          this.previewFiles.push(objectURL)
+        }
       })
     },
     cancelDefault(e) {
@@ -50,20 +68,31 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.message-container {
+.outer-container {
+  border: 2px solid #097BBD;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+.message {
   width: 100%;
   height: 80px;
   outline: none;
   white-space: pre-line;
   overflow-wrap: break-word;
-  border: 2px solid #097BBD;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
   display: inline-block;
   overflow-x: hidden;
 }
-.message-container:empty::before {
+.message:empty::before {
   content: attr(data-placeholder);
   color: gray;
+}
+.preview-files {
+  display: flex;
+}
+img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  margin-right: 0.5rem;
 }
 </style>
