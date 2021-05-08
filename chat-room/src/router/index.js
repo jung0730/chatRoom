@@ -22,12 +22,12 @@ const routes = [
     component: Login
   },
   {
-    path: '/rooms',
+    path: '/rooms/:nickname',
     name: 'Rooms',
     component: Rooms
   },
   {
-    path: '/room/:uid',
+    path: '/room/:roomId',
     name: 'Room',
     component: Room
   }

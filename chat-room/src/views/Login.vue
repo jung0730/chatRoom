@@ -9,10 +9,11 @@
       <v-col cols="8"
              md="4"
              offset-md="1">
-        <v-text-field v-model="userName"
+        <v-text-field v-model.trim="userName"
                       placeholder="Please enter your username"
                       outlined
-                      clearable />
+                      clearable
+                      @keyup.enter.native="login" />
       </v-col>
       <v-col cols="2">
         <v-btn class="mt-1 ml-1"
@@ -36,16 +37,19 @@ export default {
       isLoading: false
     }
   },
-  computed: {},
+  computed: {
+    nickname() { return this.$store.state.Environment.nickname }
+  },
   methods: {
     async login() {
       if (this.userName) {
-        try {
-          this.isLoading = true
-          const result = await this.$store.dispatch('Environment/login', {
-            nickname: this.userName
-          })
-        } catch (e) {}
+        this.isLoading = true
+        this.$store.dispatch('Environment/login', {
+          nickname: this.userName
+        }).then(data => {
+          this.userName = ''
+          this.$router.push(`/rooms/${this.nickname}`)
+        })
       }
     }
   }

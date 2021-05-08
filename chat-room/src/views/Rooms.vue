@@ -33,7 +33,7 @@
             </v-row>
             <v-row>
               <v-col cols="8">
-                <v-text-field v-model="roomName"
+                <v-text-field v-model.trim="roomName"
                               label="Room Name"
                               clearable />
               </v-col>
@@ -117,10 +117,18 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.$store.dispatch('Rooms/getRooms')
+  },
   methods: {
     addHandler() {
-      this.isShowDialog = false
-      // 打api
+      if (this.topicName && this.roomName) {
+        this.isShowDialog = false
+        this.$store.dispatch('Rooms/addRoom', {
+          topic: 'finance',
+          clubName: this.roomName
+        })
+      }
     }
   }
 }
