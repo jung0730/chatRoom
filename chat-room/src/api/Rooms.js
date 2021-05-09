@@ -5,7 +5,7 @@ const getRooms = (parameter) => {
   parameter.forEach(param => {
     searchParams.append(param.key, param.value)
   })
-  return axios.get('api/v1/club')
+  return axios.get('/api/v1/club')
 }
 
 const postRoom = (parameter) => {
