@@ -8,7 +8,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {},
   mutations: {},
-  actions: {},
+  actions: {
+    initEnvironment: async ({ dispatch}) => {
+      dispatch('Environment/init')
+    }
+  },
   modules: {
     Environment,
     Rooms

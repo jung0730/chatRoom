@@ -1,4 +1,5 @@
 import { login } from '@/api/Environment'
+import { setLocalstorage, getLocalstorage } from '@/utils/Localstorage'
 import axios from 'axios'
 
 const state = {
@@ -14,6 +15,13 @@ const mutations = {
   }
 }
 const actions = {
+  init: async ({ commit, dispatch }) => {
+    const uid = getLocalstorage('UID')
+    if (uid !== null) {
+      commit('SET_UID', uid)
+      axios.defaults.headers.common['X-Request-UID'] = uid
+    }
+  },
   login: async ({ commit, dispatch }, { nickname }) => {
     try {
       const { data } = await login(nickname)
@@ -22,8 +30,8 @@ const actions = {
         const nickname = data.data.nickname
         commit('SET_UID', uid)
         commit('SET_NICKNAME', nickname)
+        setLocalstorage('UID', uid)
         axios.defaults.headers.common['X-Request-UID'] = uid
-        return data
       } else {
         throw new Error('error')
       }
