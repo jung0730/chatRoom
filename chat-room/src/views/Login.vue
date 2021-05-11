@@ -37,9 +37,6 @@ export default {
       isLoading: false
     }
   },
-  computed: {
-    nickname() { return this.$store.state.Environment.nickname }
-  },
   methods: {
     async login() {
       if (this.userName) {
@@ -48,7 +45,7 @@ export default {
           nickname: this.userName
         }).then(data => {
           this.userName = ''
-          this.$router.push(`/rooms/${this.nickname}`)
+          this.$router.push('/rooms')
         })
       }
     }

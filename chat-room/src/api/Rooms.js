@@ -12,7 +12,12 @@ const postRoom = (parameter) => {
   return axios.post('/api/v1/club', parameter)
 }
 
+const getDropdown = () => {
+  return axios.get('/api/v1/topic')
+}
+
 export {
   getRooms,
-  postRoom
+  postRoom,
+  getDropdown
 }
