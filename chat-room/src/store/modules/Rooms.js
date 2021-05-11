@@ -24,7 +24,7 @@ const actions = {
       if (state.condition.limit !== 20) parameter.push({key: 'limit', value: state.condition.limit })
       const { data } = await getRooms(parameter)
       if (data) {
-        console.log(data)
+        console.log(data, 'getRooms')
       }
     } catch(e) {
 
@@ -34,7 +34,7 @@ const actions = {
     try {
       const { data } = await postRoom(obj)
       if (data) {
-        console.log(data)
+        console.log(data, 'addRoom')
       }
     } catch(e) {
     }

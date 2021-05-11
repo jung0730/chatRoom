@@ -9,7 +9,7 @@ const getRooms = (parameter) => {
 }
 
 const postRoom = (parameter) => {
-  return axios.post(`${process.env.VUE_APP_API}/api/v1/club`, parameter)
+  return axios.post('/api/v1/club', parameter)
 }
 
 export {
