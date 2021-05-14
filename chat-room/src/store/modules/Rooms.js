@@ -35,7 +35,7 @@ const actions = {
       if (state.condition.limit !== 20) parameter.push({key: 'limit', value: state.condition.limit })
       const { data } = await getRooms(parameter)
       if (data) {
-        commit('SET_ROOM_NAME', data.data)
+        commit('SET_ROOM_LIST', data.data)
       }
     } catch(e) {
 
@@ -45,7 +45,7 @@ const actions = {
     try {
       const { data } = await postRoom(obj)
       if (data) {
-        console.log(data, 'addRoom')
+        commit('SET_ROOM_NAME', data.data)
       }
     } catch(e) {
     }

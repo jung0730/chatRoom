@@ -8,7 +8,8 @@
              dark
              color="normal"
              class="leave-button"
-             fab>
+             fab
+             @click="leave">
         Leave
       </v-btn>
       <div ref="messageArea"
@@ -35,8 +36,8 @@
               </p>
             </div>
           </v-col>
-          <v-col v-for="(item, idx) in messages"
-                 :key="idx"
+          <v-col v-for="(item, index) in messages"
+                 :key="index"
                  cols="12">
             <div class="right-dialog-box">
               <div class="right-dialog-message">
@@ -53,8 +54,8 @@
         </v-row>
       </div>
       <form>
-        <editable-div v-model.trim="message"
-                      ref="editableComponent"
+        <editable-div ref="editableComponent"
+                      v-model.trim="message"
                       @enter="sendHandler"
                       @send-files="sendFileHandler" />
       </form>
@@ -87,6 +88,9 @@ export default {
     },
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
+    },
+    leave() {
+      this.dispatch('Room/leave')
     }
   }
 }

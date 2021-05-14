@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Rooms from '../views/Rooms.vue'
 import Room from '../views/Room.vue'
+import { getLocalstorage } from '@/utils/Localstorage'
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,16 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const uid = getLocalstorage('UID')
+  const hasUID = !!uid
+  if (!hasUID) {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router
