@@ -36,9 +36,11 @@ const actions = {
       const { data } = await getRooms(parameter)
       if (data) {
         commit('SET_ROOM_LIST', data.data)
+      } else {
+        throw new error('error')
       }
     } catch(e) {
-
+      throw e
     }
   },
   addRoom: async ({ commit, state, dispatch }, obj) => {
@@ -46,8 +48,11 @@ const actions = {
       const { data } = await postRoom(obj)
       if (data) {
         commit('SET_ROOM_NAME', data.data)
+      } else {
+        throw new error('error')
       }
     } catch(e) {
+      throw e
     }
   },
   getDropdown: async ({ commit, state, dispatch }) => {
@@ -55,8 +60,11 @@ const actions = {
       const { data } = await getDropdown()
       if (data) {
         console.log(data, 'code')
+      } else {
+        throw new error('error')
       }
     } catch(e) {
+      throw e
     }
   }
 }

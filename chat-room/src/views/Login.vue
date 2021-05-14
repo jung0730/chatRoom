@@ -41,11 +41,15 @@ export default {
     async login() {
       if (this.userName) {
         this.isLoading = true
-        this.$store.dispatch('Environment/login', {
+        await this.$store.dispatch('Environment/login', {
           nickname: this.userName
         }).then(data => {
           this.userName = ''
           this.$router.push('/rooms')
+        }).catch(e => {
+          // handle error
+        }).finally(() => {
+          this.isLoading = false
         })
       }
     }

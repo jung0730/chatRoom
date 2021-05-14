@@ -11,7 +11,9 @@ const actions = {
       } else {
         throw new Error('error')
       }
-    } catch(e) {}
+    } catch(e) {
+      throw e
+    }
   }
 }
 

@@ -117,14 +117,18 @@ export default {
     getDropdownHandler() {
       this.$store.dispatch('Rooms/getDropdown')
     },
-    addHandler() {
+    async addHandler() {
       if (this.topicName && this.roomName) {
-        this.isShowDialog = false
-        this.$store.dispatch('Rooms/addRoom', {
+        await this.$store.dispatch('Rooms/addRoom', {
           topic: this.topicName,
           clubName: this.roomName
+        }).then(data => {
+          this.topicName = ''
+          this.roomName = ''
+          this.$router.push(`/room/${this.createdRoomName}`)
+        }).catch(e => {
+          // handle error
         })
-        this.$router.push(`/room/${this.createdRoomName}`)
       }
     }
   }
