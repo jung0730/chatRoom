@@ -14,7 +14,9 @@ const mutations = {
   SET_LIST(state, data) {
     state.rooms = data.map(el => {
       return {
-        host: el.owner || '',
+        host: el.owner && el.owner.nickname || '',
+        clubId: el.owner && el.owner.clubId || '',
+        number: el.population || 0,
         name: el.clubName || '',
         topic: el.topic || '',
         id: el.id || ''
@@ -35,7 +37,7 @@ const actions = {
       if (state.condition.limit !== 20) parameter.push({key: 'limit', value: state.condition.limit })
       const { data } = await getRooms(parameter)
       if (data) {
-        commit('SET_ROOM_LIST', data.data)
+        commit('SET_LIST', data.data)
       } else {
         throw new error('error')
       }

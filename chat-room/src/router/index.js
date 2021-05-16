@@ -18,6 +18,11 @@ const routes = [
   //     import(/* webpackChunkName: "about" */ "../views/About.vue"),
   // },
   {
+    path: '/',
+    name: 'Home',
+    component: Rooms
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login
@@ -45,6 +50,8 @@ router.beforeEach((to, from, next) => {
   const hasUID = !!uid
   if (!hasUID) {
     next('/login')
+  } else if (to.name === 'Login' && hasUID) {
+    next('/')
   } else {
     next()
   }

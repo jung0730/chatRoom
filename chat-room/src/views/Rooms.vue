@@ -73,8 +73,11 @@
             style="text-transform: capitalize">
             {{ room.topic }}
           </v-card-subtitle>
-          <v-card-text v-if="room.host">
-            Hosted by {{ room.host }}
+          <v-card-text>
+            Hosted by
+            <span style="text-transform: capitalize">
+              {{ room.host }}
+            </span>
           </v-card-text>
           <v-btn color="primary"
                  class="add-button"
