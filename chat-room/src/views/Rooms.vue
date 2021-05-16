@@ -85,7 +85,8 @@
                  absolute
                  right
                  small
-                 fab>
+                 fab
+                 @click="enter(room.id)">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card>
@@ -111,7 +112,7 @@ export default {
   computed: {
     rooms() { return this.$store.state.Rooms.rooms || [] },
     nickname() { return this.$store.state.Environment.nickname || '' },
-    createdRoomName() { return this.$store.state.Rooms.roomName || '' }
+    roomId() { return this.$store.state.Rooms.createdRoom.id || '' }
   },
   mounted() {
     this.$store.dispatch('Rooms/getRooms')
@@ -119,6 +120,9 @@ export default {
   methods: {
     getDropdownHandler() {
       this.$store.dispatch('Rooms/getDropdown')
+    },
+    enter(id) {
+      this.$router.push(`/room/${id}`)
     },
     async addHandler() {
       if (this.topicName && this.roomName) {
@@ -128,7 +132,7 @@ export default {
         }).then(data => {
           this.topicName = ''
           this.roomName = ''
-          this.$router.push(`/room/${this.createdRoomName}`)
+          this.$router.push(`/room/${this.roomId}`)
         }).catch(e => {
           // handle error
         })

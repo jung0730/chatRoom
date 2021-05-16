@@ -1,15 +1,20 @@
-import { leave } from '@/api/Room'
+import { leave, getRoom } from '@/api/Room'
 
 const state = {}
 const mutations = {}
 const actions = {
   leave: async ({ commit, dispatch }) => {
     try {
-      const { data } = await leave()
+      await leave()
+    } catch(e) {
+      throw e
+    }
+  },
+  getRoom: async ({ commit, dispatch }, id) => {
+    try {
+      const data = await getRoom(id)
       if (data) {
         console.log(data)
-      } else {
-        throw new Error('error')
       }
     } catch(e) {
       throw e

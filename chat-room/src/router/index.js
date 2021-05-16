@@ -49,7 +49,11 @@ router.beforeEach((to, from, next) => {
   const uid = getLocalstorage('UID')
   const hasUID = !!uid
   if (!hasUID) {
-    next('/login')
+    if (to.name === 'Login') {
+      next()
+    } else {
+      next('/login')
+    }
   } else if (to.name === 'Login' && hasUID) {
     next('/')
   } else {

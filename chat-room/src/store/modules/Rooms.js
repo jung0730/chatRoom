@@ -8,7 +8,7 @@ const state = {
     page: 1,
     limit: 20
   },
-  roomName: ''
+  createdRoom: {}
 }
 const mutations = {
   SET_LIST(state, data) {
@@ -24,7 +24,12 @@ const mutations = {
     })
   },
   SET_ROOM_NAME(state, data) {
-    state.roomName = data.clubName
+    state.createdRoom =  {
+      id: data.id || '',
+      name: data.clubName || '',
+      topic: data.topic || '',
+      host: data.owner || ''
+    }
   }
 }
 const actions = {

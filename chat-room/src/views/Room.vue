@@ -74,6 +74,12 @@ export default {
       message: ''
     }
   },
+  mounted() {
+    this.$store.dispatch('Room/getRoom', this.$route.params.roomId)
+  },
+  computed: {
+    room() { return this.$store.state.Rooms.createdRoom || {} }
+  },
   methods: {
     sendFileHandler(file) {
       console.log(file)
@@ -89,8 +95,13 @@ export default {
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
     },
-    leave() {
-      this.dispatch('Room/leave')
+    async leave() {
+      await this.$store.dispatch('Room/leave')
+      .then(data => {
+        this.$router.push('/rooms')
+      }).catch(e => {
+        // handle error
+      })
     }
   }
 }
