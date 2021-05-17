@@ -13,6 +13,7 @@
                       placeholder="Please enter your username"
                       outlined
                       clearable
+                      data-test="input"
                       @keyup.enter.native="login" />
       </v-col>
       <v-col cols="2">
@@ -21,6 +22,7 @@
                large
                depressed
                :disabled="isLoading"
+               data-test="btn"
                @click.prevent="login">
           Login
         </v-btn>

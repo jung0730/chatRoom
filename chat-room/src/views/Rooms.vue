@@ -96,6 +96,7 @@
 </template>
 <script>
 export default {
+  name: 'Rooms',
   data() {
     return {
       topicName: '',

@@ -65,6 +65,7 @@
 <script>
 import EditableDiv from '@/components/EditableDiv'
 export default {
+  name: 'Room',
   components: {
     EditableDiv
   },
