@@ -13,12 +13,7 @@ const postRoom = (parameter) => {
   return axios.post(`${process.env.VUE_APP_API}/api/v1/club`, parameter)
 }
 
-const getDropdown = () => {
-  return axios.get(`${process.env.VUE_APP_API}/api/v1/topic`)
-}
-
 export {
   getRooms,
-  postRoom,
-  getDropdown
+  postRoom
 }

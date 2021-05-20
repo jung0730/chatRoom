@@ -1,4 +1,4 @@
-import { getRooms, postRoom, getDropdown } from '@/api/Rooms'
+import { getRooms, postRoom } from '@/api/Rooms'
 
 const state = {
   rooms: [],

@@ -23,8 +23,7 @@
                  large
                  depressed
                  v-bind="attrs"
-                 v-on="on"
-                 @click="getDropdownHandler">
+                 v-on="on">
             Start a room
           </v-btn>
         </template>
@@ -101,27 +100,21 @@ export default {
     return {
       topicName: '',
       roomName: '',
-      isShowDialog: false,
-      topics: [
-        'Finance',
-        'Science',
-        'Language',
-        'Technology'
-      ]
+      isShowDialog: false
     }
   },
   computed: {
     rooms() { return this.$store.state.Rooms.rooms || [] },
     nickname() { return this.$store.state.Environment.nickname || '' },
-    roomId() { return this.$store.state.Rooms.createdRoom.id || '' }
+    roomId() { return this.$store.state.Rooms.createdRoom.id || '' },
+    codes() { return this.$store.state.CodeTable.codes?.clubs_topic || [] },
+    topics() { return this.codes.map(el => el.Option) || []}
   },
   mounted() {
     this.$store.dispatch('Rooms/getRooms')
+    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic'])
   },
   methods: {
-    getDropdownHandler() {
-      this.$store.dispatch('Rooms/getDropdown')
-    },
     enter(id) {
       this.$router.push(`/room/${id}`)
     },

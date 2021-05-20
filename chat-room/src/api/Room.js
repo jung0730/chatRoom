@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const leave = () => {
-  return axios.get(`${process.env.VUE_APP_API}/api/v1/club/leave`)
+  return axios.post(`${process.env.VUE_APP_API}/api/v1/club/leave`)
 }
 
 const getRoom = (id) => {

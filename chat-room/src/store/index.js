@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import Environment from './modules/Environment'
 import Rooms from './modules/Rooms'
 import Room from './modules/Room'
+import CodeTable from './modules/CodeTable'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
   modules: {
     Environment,
     Rooms,
-    Room
+    Room,
+    CodeTable
   }
 })

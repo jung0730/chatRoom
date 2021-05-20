@@ -75,11 +75,11 @@ export default {
       message: ''
     }
   },
-  mounted() {
-    this.$store.dispatch('Room/getRoom', this.$route.params.roomId)
-  },
   computed: {
     room() { return this.$store.state.Rooms.createdRoom || {} }
+  },
+  mounted() {
+    this.$store.dispatch('Room/getRoom', this.$route.params.roomId)
   },
   methods: {
     sendFileHandler(file) {
