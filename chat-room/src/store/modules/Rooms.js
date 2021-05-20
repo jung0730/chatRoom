@@ -14,8 +14,8 @@ const mutations = {
   SET_LIST(state, data) {
     state.rooms = data.map(el => {
       return {
-        host: el.owner && el.owner.nickname || '',
-        clubId: el.owner && el.owner.clubId || '',
+        host: el.owner?.nickname || '',
+        clubId: el.owner?.clubId || '',
         number: el.population || 0,
         name: el.clubName || '',
         topic: el.topic || '',
