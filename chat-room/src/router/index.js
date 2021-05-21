@@ -33,10 +33,15 @@ const routes = [
     component: Rooms
   },
   {
-    path: '/room/:roomId',
+    path: '/room/:roomId(\\d+)',
     name: 'Room',
     component: Room
   }
+  // {
+  //   path: '*',
+  //   name: 'NotFound',
+  //   component: Error
+  // }
 ]
 
 const router = new VueRouter({
