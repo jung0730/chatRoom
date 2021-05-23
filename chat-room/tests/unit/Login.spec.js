@@ -1,17 +1,20 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import { mount, createLocalVue } from '@vue/test-utils'
 import Login from '@/views/Login.vue'
-import { createLocalVue , mount } from "@vue/test-utils"
+
+Vue.use(Vuetify)
+const localVue = createLocalVue()
 
 describe('Login.vue', () => {
-  const localVue = createLocalVue()
   let vuetify
+  let wrapper
   beforeEach(() => {
     vuetify = new Vuetify()
-  })
-  const wrapper = mount(Login, {
-    localVue,
-    vuetify
+    wrapper = mount(Login, {
+      localVue,
+      vuetify
+    })
   })
   it('renders', () => {
     expect(wrapper.exists()).toBe(true)
