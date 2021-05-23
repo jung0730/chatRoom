@@ -17,11 +17,13 @@
     <v-row justify="center">
       <v-dialog v-model="isShowDialog"
                 width="600"
-                overlay-opacity="0.9">
+                overlay-opacity="0.9"
+                data-test="dialog">
         <template v-slot:activator="{ on, attrs}">
           <v-btn color="primary"
                  large
                  depressed
+                 data-test="btn"
                  v-bind="attrs"
                  v-on="on">
             Start a room
@@ -111,8 +113,8 @@ export default {
     topics() { return this.codes.map(el => el.Option) || []}
   },
   mounted() {
-    this.$store.dispatch('Rooms/getRooms')
-    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic'])
+    this.$store.dispatch('Rooms/getRooms').catch(e => console.log(e))
+    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => console.log(e))
   },
   methods: {
     enter(id) {
