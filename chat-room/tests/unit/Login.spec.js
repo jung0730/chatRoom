@@ -2,9 +2,12 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import { mount, createLocalVue } from '@vue/test-utils'
 import Login from '@/views/Login.vue'
+import axios from 'axios'
+import store from '@/store/index.js'
 
 Vue.use(Vuetify)
 const localVue = createLocalVue()
+jest.mock('axios')
 
 describe('Login.vue', () => {
   let vuetify
@@ -13,15 +16,38 @@ describe('Login.vue', () => {
     vuetify = new Vuetify()
     wrapper = mount(Login, {
       localVue,
-      vuetify
+      vuetify,
+      store: {
+        ...store,
+        modules: {
+          ...store.modules
+        }
+      }
     })
   })
   it('renders', () => {
     expect(wrapper.exists()).toBe(true)
   })
-  it('', () => {
-    const input = wrapper.find('[data-test="input"]')
-    input.element.value = 'rebecca'
-    input.trigger('keyup.enter')
+  it('if the username is empty, the button will remain disabled', async () => {
+    wrapper.find('[data-test="userName"]').setValue('')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('[data-test="btn"]').attributes('disabled')).toBeTruthy()
+  })
+  it('if the username is not empty, click the button and call api', async () => {
+    wrapper.find('[data-test="userName"]').setValue('rebecca')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('[data-test="btn"]').attributes('disabled')).toBeFalsy()
+    wrapper.find('[data-test="btn"]').trigger('click')
+    axios.post.mockImplementationOnce(() => {
+      Promise.resolve({
+        data: {
+          data: {
+            uid: 'test',
+            nickname: 'rebecca'
+          }
+        }
+      })
+    })
+    expect(axios.post).toHaveBeenCalledTimes(1)
   })
 })
