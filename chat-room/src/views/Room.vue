@@ -56,8 +56,7 @@
       <form>
         <editable-div ref="editableComponent"
                       v-model.trim="message"
-                      @enter="sendHandler"
-                      @send-files="sendFileHandler" />
+                      @enter="sendHandler" />
       </form>
     </v-container>
   </v-container>
@@ -73,7 +72,6 @@ export default {
     return {
       messages: [],
       message: '',
-      serverData: null,
       ws: null
     }
   },
@@ -81,7 +79,11 @@ export default {
     room() { return this.$store.state.Rooms.createdRoom || {} }
   },
   created() {
-    this.initWs()
+    this.ws = new WebSocket('ws://104.214.48.227:8080/api/v1/ws/1')
+    this.ws.onopen = (e) => { console.log(e) }
+    this.ws.onmessage = (e) => {
+      this.messages.push(e.data)
+    }
   },
   destroyed() {
     this.ws.close()
@@ -90,26 +92,9 @@ export default {
     this.$store.dispatch('Room/getRoom', this.$route.params.roomId)
   },
   methods: {
-    initWs() {
-      this.ws = new WebSocket('')
-      this.ws.onmessage = this.wsOnMessage()
-      this.ws.onopen = this.wsSendMessage()
-    },
-    wsOnMessage(e) {
-      this.serverData = JSON.parse(e.data)
-      // 處理server回來的data
-    },
-    wsSendMessage(e) {
-      // 發送data給server
-      const data = {"test": "12345"}
-      this.ws.send(JSON.stringify(data))
-    },
-    sendFileHandler(file) {
-      console.log(file)
-    },
     sendHandler(files) {
-      if (this.message) this.messages.push(this.message)
-      if (files.length > 0) this.messages.push(files)
+      if (this.message) this.ws.send(this.message)
+      if (files.length > 0) this.ws.send(files)
       this.message = ''
       this.$nextTick(() => {
         this.scrollToBottom()
