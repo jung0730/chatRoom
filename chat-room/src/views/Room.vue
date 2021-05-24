@@ -72,16 +72,38 @@ export default {
   data() {
     return {
       messages: [],
-      message: ''
+      message: '',
+      serverData: null,
+      ws: null
     }
   },
   computed: {
     room() { return this.$store.state.Rooms.createdRoom || {} }
   },
+  created() {
+    this.initWs()
+  },
+  destroyed() {
+    this.ws.close()
+  },
   mounted() {
     this.$store.dispatch('Room/getRoom', this.$route.params.roomId)
   },
   methods: {
+    initWs() {
+      this.ws = new WebSocket('')
+      this.ws.onmessage = this.wsOnMessage()
+      this.ws.onopen = this.wsSendMessage()
+    },
+    wsOnMessage(e) {
+      this.serverData = JSON.parse(e.data)
+      // 處理server回來的data
+    },
+    wsSendMessage(e) {
+      // 發送data給server
+      const data = {"test": "12345"}
+      this.ws.send(JSON.stringify(data))
+    },
     sendFileHandler(file) {
       console.log(file)
     },
