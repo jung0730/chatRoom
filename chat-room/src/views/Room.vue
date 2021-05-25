@@ -82,7 +82,8 @@ export default {
     this.ws = new WebSocket('ws://104.214.48.227:8080/api/v1/ws/1')
     this.ws.onopen = (e) => { console.log(e) }
     this.ws.onmessage = (e) => {
-      this.messages.push(e.data)
+      const data = e.data.includes('blob') ? JSON.parse(e.data) : e.data
+      this.messages.push(data)
     }
   },
   destroyed() {
@@ -94,7 +95,7 @@ export default {
   methods: {
     sendHandler(files) {
       if (this.message) this.ws.send(this.message)
-      if (files.length > 0) this.ws.send(files)
+      if (files.length > 0) this.ws.send(JSON.stringify(files))
       this.message = ''
       this.$nextTick(() => {
         this.scrollToBottom()
