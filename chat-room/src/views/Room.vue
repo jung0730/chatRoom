@@ -76,14 +76,19 @@ export default {
     }
   },
   computed: {
-    room() { return this.$store.state.Rooms.createdRoom || {} }
+    room() { return this.$store.state.Rooms.createdRoom || {} },
+    id() { return this.$store.state.Environment.id || '' },
+    nickname() { return this.$store.state.Environment.nickname || '' }
   },
   created() {
-    this.ws = new WebSocket('ws://104.214.48.227:8080/api/v1/ws/1')
+    this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/${this.$route.params.roomId}?uid=${this.id}`)
     this.ws.onopen = (e) => { console.log(e) }
     this.ws.onmessage = (e) => {
-      const data = e.data.includes('blob') ? JSON.parse(e.data) : e.data
-      this.messages.push(data)
+      console.log(e)
+      const data = JSON.parse(e.data)
+      this.messages.push(data.message)
+      // const data = e.data.includes('blob') ? JSON.parse(e.data) : e.data
+      // this.messages.push(data)
     }
   },
   destroyed() {
@@ -94,7 +99,7 @@ export default {
   },
   methods: {
     sendHandler(files) {
-      if (this.message) this.ws.send(this.message)
+      if (this.message) this.ws.send(JSON.stringify({nickname: this.nickname, message: this.message}))
       if (files.length > 0) this.ws.send(JSON.stringify(files))
       this.message = ''
       this.$nextTick(() => {
