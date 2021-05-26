@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import { mount, createLocalVue } from '@vue/test-utils'
-import Login from '@/views/Login.vue'
+import Login from '@/views/Login'
 import axios from 'axios'
-import store from '@/store/index.js'
+import store from '@/store/index'
 
 Vue.use(Vuetify)
 const localVue = createLocalVue()
@@ -17,12 +17,7 @@ describe('Login.vue', () => {
     wrapper = mount(Login, {
       localVue,
       vuetify,
-      store: {
-        ...store,
-        modules: {
-          ...store.modules
-        }
-      }
+      store
     })
   })
   it('renders', () => {

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import { mount, createLocalVue } from '@vue/test-utils'
-import Rooms from '@/views/Rooms.vue'
-import store from '@/store/index.js'
+import Rooms from '@/views/Rooms'
+import store from '@/store/index'
 
 Vue.use(Vuetify)
 const localVue = createLocalVue()
@@ -15,12 +15,7 @@ describe('Rooms.vue', () => {
     wrapper = mount(Rooms, {
       localVue,
       vuetify,
-      store: {
-        ...store,
-        modules: {
-          ...store.modules
-        }
-      }
+      store
     })
   })
   it('renders', () => {
