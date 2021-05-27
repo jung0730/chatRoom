@@ -14,40 +14,48 @@
       </v-btn>
       <div ref="messageArea"
            class="message-area">
-        <v-row>
-          <v-col cols="6">
+        <v-row v-for="(item, idx) in messages"
+               :key="idx">
+          <v-col v-if="item.nickname !== nickname" 
+                 cols="6">
             <div class="left-dialog-box">
               <v-avatar color="secondaryDark"
                         size="56"
-                        class="mr-4">
-                Xiang
+                        class="mr-2"
+                        style="text-transform:capitalize">
+                {{ item.nickname.charAt(0) }}
               </v-avatar>
-              <p class="left-dialog-message">
-                Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
-                "There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain..."
-              </p>
-            </div>
-          </v-col>
-          <v-col cols="6" 
-                 offset="6">
-            <div class="right-dialog-box">
-              <p class="right-dialog-message">
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </v-col>
-          <v-col v-for="(item, index) in messages"
-                 :key="index"
-                 cols="12">
-            <div class="right-dialog-box">
-              <div class="right-dialog-message">
-                <div v-if="Array.isArray(item)">
-                  <div v-for="(file, idx) in item"
-                       :key="idx">
+              <div class="left-dialog-message">
+                <template v-if="Array.isArray(item.message)">
+                  <div v-for="(file, index) in item.message"
+                       :key="index">
                     <img :src="file">
                   </div>
-                </div>
-                <span v-else>{{ item }}</span>
+                </template>
+                <template v-else>
+                  <p>
+                    {{ item.message }}
+                  </p>
+                </template>
+              </div>
+            </div>
+          </v-col>
+          <v-col v-else 
+                 cols="6"
+                 offset="6">
+            <div class="right-dialog-box">
+              <div class="right-dialog-message">
+                <template v-if="Array.isArray(item.message)">
+                  <div v-for="(file, index) in item.message"
+                       :key="index">
+                    <img :src="file">
+                  </div>
+                </template>
+                <template v-else>
+                  <p>
+                    {{ item.message }}
+                  </p>
+                </template>
               </div>
             </div>
           </v-col>
@@ -86,7 +94,7 @@ export default {
     this.ws.onmessage = (e) => {
       console.log(e)
       const data = JSON.parse(e.data)
-      this.messages.push(data.message)
+      this.messages.push(data)
       // const data = e.data.includes('blob') ? JSON.parse(e.data) : e.data
       // this.messages.push(data)
     }
@@ -99,8 +107,8 @@ export default {
   },
   methods: {
     sendHandler(files) {
-      if (this.message) this.ws.send(JSON.stringify({nickname: this.nickname, message: this.message}))
-      if (files.length > 0) this.ws.send(JSON.stringify(files))
+      if (this.message) this.ws.send(JSON.stringify({ nickname: this.nickname, message: this.message }))
+      if (files.length > 0) this.ws.send(JSON.stringify({ nickname: this.nickname, message: files }))
       this.message = ''
       this.$nextTick(() => {
         this.scrollToBottom()
