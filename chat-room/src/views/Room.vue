@@ -16,16 +16,17 @@
            class="message-area">
         <v-row v-for="(item, idx) in messages"
                :key="idx">
-          <v-col v-if="item.nickname !== nickname" 
-                 cols="6">
-            <div class="left-dialog-box">
-              <v-avatar color="secondaryDark"
+          <v-col cols="6"
+                 :offset="checkUser(item.nickname) ? 0 : 6">
+            <div :class="checkUser(item.nickname) ? 'left-dialog-box' : 'right-dialog-box'">
+              <v-avatar v-show="item.nickname !== nickname"
+                        color="secondaryDark"
                         size="56"
                         class="mr-2"
                         style="text-transform:capitalize">
                 {{ item.nickname.charAt(0) }}
               </v-avatar>
-              <div class="left-dialog-message">
+              <div :class="checkUser(item.nickname) ? 'left-dialog-message' : 'right-dialog-message'">
                 <template v-if="Array.isArray(item.message)">
                   <div v-for="(file, index) in item.message"
                        :key="index">
@@ -33,28 +34,9 @@
                   </div>
                 </template>
                 <template v-else>
-                  <p>
+                  <span>
                     {{ item.message }}
-                  </p>
-                </template>
-              </div>
-            </div>
-          </v-col>
-          <v-col v-else 
-                 cols="6"
-                 offset="6">
-            <div class="right-dialog-box">
-              <div class="right-dialog-message">
-                <template v-if="Array.isArray(item.message)">
-                  <div v-for="(file, index) in item.message"
-                       :key="index">
-                    <img :src="file">
-                  </div>
-                </template>
-                <template v-else>
-                  <p>
-                    {{ item.message }}
-                  </p>
+                  </span>
                 </template>
               </div>
             </div>
@@ -106,6 +88,9 @@ export default {
     this.$store.dispatch('Room/getRoom', this.$route.params.roomId)
   },
   methods: {
+    checkUser(nickname) {
+      return nickname !== this.nickname
+    },
     sendHandler(files) {
       if (this.message) this.ws.send(JSON.stringify({ nickname: this.nickname, message: this.message }))
       if (files.length > 0) this.ws.send(JSON.stringify({ nickname: this.nickname, message: files }))
