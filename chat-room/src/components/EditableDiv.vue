@@ -31,7 +31,8 @@ export default {
   },
   data() {
     return {
-      previewFiles: []
+      previewFiles: [],
+      test: ''
     }
   },
   watch: {
@@ -45,17 +46,36 @@ export default {
     changeText() {
       this.$emit('input', this.$refs.contentEditable.textContent)
     },
+    // dataURLToBlob(dataurl){
+	  //   var arr = dataurl.split(',');
+	  //   var mime = arr[0].match(/:(.*?);/)[1];
+	  //   var bstr = atob(arr[1]);
+	  //   var n = bstr.length;
+	  //   var u8arr = new Uint8Array(n);
+    //   while(n--){
+    //     u8arr[n] = bstr.charCodeAt(n);
+    //   }
+	  //   return new Blob([u8arr], {type:mime});
+    // },
     captureEnterEvent(e) {
       if (e.keyCode === 13 && !e.shiftKey) {
         e.preventDefault()
         const files = [...this.previewFiles]
-        this.$emit('enter', files)
+        this.$emit('enter', this.test)
         this.previewFiles.splice(0)
       }
     },
     drop(e) {
       e.dataTransfer.files.forEach(file => {
+        console.log(file, 'file')
         if (file.type.includes('image')) {
+          const reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = (e) => {
+            console.log(reader.result)
+            this.test = reader.result
+          }
+
           const objectURL = URL.createObjectURL(file)
           this.previewFiles.push(objectURL)
         }
