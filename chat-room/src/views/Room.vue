@@ -2,7 +2,7 @@
   <v-container fluid
                class="room-container">
     <v-container class="chat-container">
-      <v-btn elevation="4"
+      <!--<v-btn elevation="4"
              absolute
              left
              dark
@@ -11,7 +11,7 @@
              fab
              @click="leave">
         Leave
-      </v-btn>
+      </v-btn> -->
       <div ref="messageArea"
            class="message-area">
         <v-row v-for="(item, idx) in messages"
@@ -27,11 +27,8 @@
                 {{ item.nickname.charAt(0) }}
               </v-avatar>
               <div :class="checkUser(item.nickname) ? 'left-dialog-message' : 'right-dialog-message'">
-                <template v-if="Array.isArray(item.message)">
-                  <div v-for="(img, index) in item.message"
-                       :key="index">
-                    <img :src="img">
-                  </div>
+                <template v-if="item.message.includes('data:image')">
+                    <img :src="item.message">
                 </template>
                 <template v-else>
                   <span>
@@ -74,7 +71,6 @@ export default {
     this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/${this.$route.params.roomId}?userId=${this.id}`)
     this.ws.onopen = (e) => { console.log(e) }
     this.ws.onmessage = (e) => {
-      console.log(e.data)
       const data = JSON.parse(e.data)
       this.messages.push(data)
     }
@@ -92,7 +88,11 @@ export default {
     },
     sendHandler(files) {
       if (this.message) this.ws.send(JSON.stringify({ nickname: this.nickname, message: this.message }))
-      if (files.length > 0) this.ws.send(JSON.stringify({ nickname: this.nickname, message: files }))
+      if (files.length > 0) {
+        files.forEach(file => {
+          this.ws.send(JSON.stringify({ nickname: this.nickname, message: file }))
+        })
+      }
       this.message = ''
       this.$nextTick(() => {
         this.scrollToBottom()
@@ -101,14 +101,14 @@ export default {
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
     },
-    async leave() {
-      await this.$store.dispatch('Room/leave')
-      .then(data => {
-        this.$router.push('/rooms')
-      }).catch(e => {
-        // handle error
-      })
-    }
+    // async leave() {
+    //   await this.$store.dispatch('Room/leave')
+    //   .then(data => {
+    //     this.$router.push('/rooms')
+    //   }).catch(e => {
+    //     // handle error
+    //   })
+    // }
   }
 }
 </script>
