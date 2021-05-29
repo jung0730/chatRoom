@@ -45,6 +45,21 @@ export default {
     changeText() {
       this.$emit('input', this.$refs.contentEditable.textContent)
     },
+    compressImg(img, size) {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      const width = img.width
+      const height = img.height
+      canvas.width = width
+      canvas.height = height
+      // 铺底色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, width, height)
+      // 最小壓縮
+      const data = canvas.toDataURL('image/jpeg', size)
+      return data
+    },
     captureEnterEvent(e) {
       if (e.keyCode === 13 && !e.shiftKey) {
         e.preventDefault()
@@ -56,8 +71,25 @@ export default {
     drop(e) {
       e.dataTransfer.files.forEach(file => {
         if (file.type.includes('image')) {
-          const objectURL = URL.createObjectURL(file)
-          this.previewFiles.push(objectURL)
+          const reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = (e) => {
+            const image = new Image()
+            image.src = reader.result
+            image.onload = () => {
+              let compressImg = ''
+              if ((file.size / 1024 / 1024) > 4) {
+                compressImg = this.compressImg(image, 0.1)
+              } else if ((file.size / 1024 / 1024) > 3) {
+                compressImg = this.compressImg(image, 0.3)
+              } else if ((file.size / 1024 / 1024) > 2) {
+                compressImg = this.compressImg(image, 0.4)
+              } else {
+                compressImg = this.compressImg(image, 0.5)
+              }
+              this.previewFiles.push(compressImg)
+            }
+          }
         }
       })
     },

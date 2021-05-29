@@ -2,7 +2,7 @@
   <v-container fluid
                class="room-container">
     <v-container class="chat-container">
-      <v-btn elevation="4"
+      <!--<v-btn elevation="4"
              absolute
              left
              dark
@@ -11,43 +11,30 @@
              fab
              @click="leave">
         Leave
-      </v-btn>
+      </v-btn> -->
       <div ref="messageArea"
            class="message-area">
-        <v-row>
-          <v-col cols="6">
-            <div class="left-dialog-box">
-              <v-avatar color="secondaryDark"
+        <v-row v-for="(item, idx) in messages"
+               :key="idx">
+          <v-col cols="6"
+                 :offset="checkUser(item.nickname) ? 0 : 6">
+            <div :class="checkUser(item.nickname) ? 'left-dialog-box' : 'right-dialog-box'">
+              <v-avatar v-if="item.nickname !== nickname"
+                        color="secondaryDark"
                         size="56"
-                        class="mr-4">
-                Xiang
+                        class="mr-2"
+                        style="text-transform:capitalize">
+                {{ item.nickname.charAt(0) }}
               </v-avatar>
-              <p class="left-dialog-message">
-                Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
-                "There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain..."
-              </p>
-            </div>
-          </v-col>
-          <v-col cols="6" 
-                 offset="6">
-            <div class="right-dialog-box">
-              <p class="right-dialog-message">
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </v-col>
-          <v-col v-for="(item, index) in messages"
-                 :key="index"
-                 cols="12">
-            <div class="right-dialog-box">
-              <div class="right-dialog-message">
-                <div v-if="Array.isArray(item)">
-                  <div v-for="(file, idx) in item"
-                       :key="idx">
-                    <img :src="file">
-                  </div>
-                </div>
-                <span v-else>{{ item }}</span>
+              <div :class="checkUser(item.nickname) ? 'left-dialog-message' : 'right-dialog-message'">
+                <template v-if="item.message.includes('data:image')">
+                    <img :src="item.message">
+                </template>
+                <template v-else>
+                  <span>
+                    {{ item.message }}
+                  </span>
+                </template>
               </div>
             </div>
           </v-col>
@@ -56,8 +43,7 @@
       <form>
         <editable-div ref="editableComponent"
                       v-model.trim="message"
-                      @enter="sendHandler"
-                      @send-files="sendFileHandler" />
+                      @enter="sendHandler" />
       </form>
     </v-container>
   </v-container>
@@ -72,22 +58,41 @@ export default {
   data() {
     return {
       messages: [],
-      message: ''
+      message: '',
+      ws: null
     }
   },
   computed: {
-    room() { return this.$store.state.Rooms.createdRoom || {} }
+    room() { return this.$store.state.Rooms.createdRoom || {} },
+    id() { return this.$store.state.Environment.id || '' },
+    nickname() { return this.$store.state.Environment.nickname || '' }
+  },
+  created() {
+    this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/${this.$route.params.roomId}?userId=${this.id}`)
+    this.ws.onopen = (e) => { console.log(e) }
+    this.ws.onmessage = (e) => {
+      const data = JSON.parse(e.data)
+      this.messages.push(data)
+    }
+    this.ws.onerror = (e) => { console.log('error', e )}
+  },
+  destroyed() {
+    this.ws.close()
   },
   mounted() {
     this.$store.dispatch('Room/getRoom', this.$route.params.roomId)
   },
   methods: {
-    sendFileHandler(file) {
-      console.log(file)
+    checkUser(nickname) {
+      return nickname !== this.nickname
     },
     sendHandler(files) {
-      if (this.message) this.messages.push(this.message)
-      if (files.length > 0) this.messages.push(files)
+      if (this.message) this.ws.send(JSON.stringify({ nickname: this.nickname, message: this.message }))
+      if (files.length > 0) {
+        files.forEach(file => {
+          this.ws.send(JSON.stringify({ nickname: this.nickname, message: file }))
+        })
+      }
       this.message = ''
       this.$nextTick(() => {
         this.scrollToBottom()
@@ -96,14 +101,14 @@ export default {
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
     },
-    async leave() {
-      await this.$store.dispatch('Room/leave')
-      .then(data => {
-        this.$router.push('/rooms')
-      }).catch(e => {
-        // handle error
-      })
-    }
+    // async leave() {
+    //   await this.$store.dispatch('Room/leave')
+    //   .then(data => {
+    //     this.$router.push('/rooms')
+    //   }).catch(e => {
+    //     // handle error
+    //   })
+    // }
   }
 }
 </script>

@@ -14,7 +14,7 @@ const actions = {
     try {
       const data = await getRoom(id)
       if (data) {
-        console.log(data)
+        // console.log(data)
       }
     } catch(e) {
       throw e
