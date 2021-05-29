@@ -7,11 +7,29 @@ const state = {
     name: '',
     page: 1,
     limit: 20
-  }
+  },
+  createdRoom: {}
 }
 const mutations = {
   SET_LIST(state, data) {
-    state.rooms = data
+    state.rooms = data.map(el => {
+      return {
+        host: el.owner?.nickname || '',
+        clubId: el.owner?.clubId || '',
+        number: el.population || 0,
+        name: el.clubName || '',
+        topic: el.topic || '',
+        id: el.id || ''
+      }
+    })
+  },
+  SET_ROOM_NAME(state, data) {
+    state.createdRoom =  {
+      id: data.id || '',
+      name: data.clubName || '',
+      topic: data.topic || '',
+      host: data.owner || ''
+    }
   }
 }
 const actions = {
@@ -24,19 +42,36 @@ const actions = {
       if (state.condition.limit !== 20) parameter.push({key: 'limit', value: state.condition.limit })
       const { data } = await getRooms(parameter)
       if (data) {
-        console.log(data)
+        commit('SET_LIST', data.data)
+      } else {
+        throw new error('error')
       }
     } catch(e) {
-
+      throw e
     }
   },
   addRoom: async ({ commit, state, dispatch }, obj) => {
     try {
       const { data } = await postRoom(obj)
       if (data) {
-        console.log(data)
+        commit('SET_ROOM_NAME', data.data)
+      } else {
+        throw new error('error')
       }
     } catch(e) {
+      throw e
+    }
+  },
+  getDropdown: async ({ commit, state, dispatch }) => {
+    try {
+      const { data } = await getDropdown()
+      if (data) {
+        console.log(data, 'code')
+      } else {
+        throw new error('error')
+      }
+    } catch(e) {
+      throw e
     }
   }
 }

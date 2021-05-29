@@ -13,6 +13,7 @@
                       placeholder="Please enter your username"
                       outlined
                       clearable
+                      data-test="userName"
                       @keyup.enter.native="login" />
       </v-col>
       <v-col cols="2">
@@ -20,7 +21,8 @@
                color="primary"
                large
                depressed
-               :disabled="isLoading"
+               :disabled="isLoading || !userName"
+               data-test="btn"
                @click.prevent="login">
           Login
         </v-btn>
@@ -37,18 +39,19 @@ export default {
       isLoading: false
     }
   },
-  computed: {
-    nickname() { return this.$store.state.Environment.nickname }
-  },
   methods: {
     async login() {
       if (this.userName) {
         this.isLoading = true
-        this.$store.dispatch('Environment/login', {
+        await this.$store.dispatch('Environment/login', {
           nickname: this.userName
         }).then(data => {
           this.userName = ''
-          this.$router.push(`/rooms/${this.nickname}`)
+          this.$router.push('/rooms')
+        }).catch(e => {
+          // handle error
+        }).finally(() => {
+          this.isLoading = false
         })
       }
     }

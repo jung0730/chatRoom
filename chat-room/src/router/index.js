@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Rooms from '../views/Rooms.vue'
 import Room from '../views/Room.vue'
+import { getLocalstorage } from '@/utils/Localstorage'
 
 Vue.use(VueRouter)
 
@@ -17,26 +18,52 @@ const routes = [
   //     import(/* webpackChunkName: "about" */ "../views/About.vue"),
   // },
   {
+    path: '/',
+    name: 'Home',
+    component: Rooms
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login
   },
   {
-    path: '/rooms/:nickname',
+    path: '/rooms',
     name: 'Rooms',
     component: Rooms
   },
   {
-    path: '/room/:roomId',
+    path: '/room/:roomId(\\d+)',
     name: 'Room',
     component: Room
   }
+  // {
+  //   path: '*',
+  //   name: 'NotFound',
+  //   component: Error
+  // }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const uid = getLocalstorage('UID')
+  const hasUID = !!uid
+  if (!hasUID) {
+    if (to.name === 'Login') {
+      next()
+    } else {
+      next('/login')
+    }
+  } else if (to.name === 'Login' && hasUID) {
+    next('/')
+  } else {
+    next()
+  }
 })
 
 export default router

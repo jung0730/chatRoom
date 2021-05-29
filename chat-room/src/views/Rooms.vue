@@ -10,13 +10,20 @@
       </v-col>
     </v-row>
     <v-row justify="center">
+      <p style="text-transform: capitalize">
+        Hello, {{ nickname }}
+      </p>
+    </v-row>
+    <v-row justify="center">
       <v-dialog v-model="isShowDialog"
                 width="600"
-                overlay-opacity="0.9">
+                overlay-opacity="0.9"
+                data-test="dialog">
         <template v-slot:activator="{ on, attrs}">
           <v-btn color="primary"
                  large
                  depressed
+                 data-test="btn"
                  v-bind="attrs"
                  v-on="on">
             Start a room
@@ -56,25 +63,33 @@
       <v-col cols="10"
              sm="7"
              md="4">
-        <v-card v-for="(card, idx) in cards"
+        <v-card v-for="(room, idx) in rooms"
                 :key="idx"
                 elevation="2"
                 class="mx-auto mb-8 card-deco">
           <v-card-title>
-            {{ card.title }}
+            {{ room.name }}
           </v-card-title>
+          <v-card-subtitle
+            style="text-transform: capitalize">
+            {{ room.topic }}
+          </v-card-subtitle>
           <v-card-text>
-            Hosted by {{ card.host }}
-            <v-btn color="primary"
-                   class="add-button"
-                   dark
-                   absolute
-                   right
-                   small
-                   fab>
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
+            Hosted by
+            <span style="text-transform: capitalize">
+              {{ room.host }}
+            </span>
           </v-card-text>
+          <v-btn color="primary"
+                 class="add-button"
+                 dark
+                 absolute
+                 right
+                 small
+                 fab
+                 @click="enter(room.id)">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
         </v-card>
       </v-col>
     </v-row>
@@ -82,51 +97,40 @@
 </template>
 <script>
 export default {
+  name: 'Rooms',
   data() {
     return {
-      cards: [
-        {
-          title: 'Title 1 test',
-          host: 'Beca'
-        },
-        {
-          title: 'Title 2 test',
-          host: 'Xiang'
-        },
-        {
-          title: 'Title 3 test',
-          host: 'Jacky'
-        },
-        {
-          title: 'Title 4 test',
-          host: 'Zhen'
-        },
-        {
-          title: 'Title 5 test',
-          host: 'Wei'
-        }
-      ],
       topicName: '',
       roomName: '',
-      isShowDialog: false,
-      topics: [
-        'Finance',
-        'Science',
-        'Language',
-        'Technology'
-      ]
+      isShowDialog: false
     }
   },
+  computed: {
+    rooms() { return this.$store.state.Rooms.rooms || [] },
+    nickname() { return this.$store.state.Environment.nickname || '' },
+    roomId() { return this.$store.state.Rooms.createdRoom.id || '' },
+    codes() { return this.$store.state.CodeTable.codes?.clubs_topic || [] },
+    topics() { return this.codes.map(el => el.Option) || []}
+  },
   mounted() {
-    this.$store.dispatch('Rooms/getRooms')
+    this.$store.dispatch('Rooms/getRooms').catch(e => console.log(e))
+    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => console.log(e))
   },
   methods: {
-    addHandler() {
+    enter(id) {
+      this.$router.push(`/room/${id}`)
+    },
+    async addHandler() {
       if (this.topicName && this.roomName) {
-        this.isShowDialog = false
-        this.$store.dispatch('Rooms/addRoom', {
-          topic: 'finance',
+        await this.$store.dispatch('Rooms/addRoom', {
+          topic: this.topicName,
           clubName: this.roomName
+        }).then(data => {
+          this.topicName = ''
+          this.roomName = ''
+          this.$router.push(`/room/${this.roomId}`)
+        }).catch(e => {
+          // handle error
         })
       }
     }
@@ -162,6 +166,9 @@ export default {
     clip-path: polygon(50% 0, 100% 0%, 100% 75%, 50% 45%);
   }
 }
+.card-deco {
+  min-height: 8rem;
+}
 .card-deco::before {
   content: '';
   background: #FFD402;
@@ -172,7 +179,9 @@ export default {
   transform: rotate(-20deg) translate(-10px, -6px);
 }
 .add-button {
-  transform: translateY(-30px);
+  position: absolute;
+  top: 0;
+  transform: translateY(100%);
 }
 .v-dialog__content {
   align-items: flex-start
