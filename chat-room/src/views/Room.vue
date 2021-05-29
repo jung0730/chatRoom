@@ -28,7 +28,7 @@
               </v-avatar>
               <div :class="checkUser(item.nickname) ? 'left-dialog-message' : 'right-dialog-message'">
                 <template v-if="item.message.includes('data:image')">
-                    <img :src="item.message">
+                  <img :src="item.message">
                 </template>
                 <template v-else>
                   <span>
@@ -100,7 +100,7 @@ export default {
     },
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
-    },
+    }
     // async leave() {
     //   await this.$store.dispatch('Room/leave')
     //   .then(data => {

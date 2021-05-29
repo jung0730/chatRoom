@@ -7,11 +7,11 @@
 <script>
 export default {
   name: 'App',
-  created() {
-    this.$store.dispatch('initEnvironment')
-  },
   data: () => ({
     //
-  })
+  }),
+  created() {
+    this.$store.dispatch('initEnvironment')
+  }
 }
 </script>
