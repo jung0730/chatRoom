@@ -31,8 +31,7 @@ export default {
   },
   data() {
     return {
-      previewFiles: [],
-      test: ''
+      previewFiles: []
     }
   },
   watch: {
@@ -46,38 +45,51 @@ export default {
     changeText() {
       this.$emit('input', this.$refs.contentEditable.textContent)
     },
-    // dataURLToBlob(dataurl){
-	  //   var arr = dataurl.split(',');
-	  //   var mime = arr[0].match(/:(.*?);/)[1];
-	  //   var bstr = atob(arr[1]);
-	  //   var n = bstr.length;
-	  //   var u8arr = new Uint8Array(n);
-    //   while(n--){
-    //     u8arr[n] = bstr.charCodeAt(n);
-    //   }
-	  //   return new Blob([u8arr], {type:mime});
-    // },
+    compressImg(img, size) {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      const width = img.width
+      const height = img.height
+      canvas.width = width
+      canvas.height = height
+      // 铺底色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, width, height)
+      // 最小壓縮
+      const data = canvas.toDataURL('image/jpeg', size)
+      return data
+    },
     captureEnterEvent(e) {
       if (e.keyCode === 13 && !e.shiftKey) {
         e.preventDefault()
         const files = [...this.previewFiles]
-        this.$emit('enter', this.test)
+        this.$emit('enter', files)
         this.previewFiles.splice(0)
       }
     },
     drop(e) {
       e.dataTransfer.files.forEach(file => {
-        console.log(file, 'file')
         if (file.type.includes('image')) {
           const reader = new FileReader()
           reader.readAsDataURL(file)
           reader.onload = (e) => {
-            console.log(reader.result)
-            this.test = reader.result
+            const image = new Image()
+            image.src = reader.result
+            image.onload = () => {
+              let compressImg = ''
+              if ((file.size / 1024 / 1024) > 4) {
+                compressImg = this.compressImg(image, 0.1)
+              } else if ((file.size / 1024 / 1024) > 3) {
+                compressImg = this.compressImg(image, 0.3)
+              } else if ((file.size / 1024 / 1024) > 2) {
+                compressImg = this.compressImg(image, 0.4)
+              } else {
+                compressImg = this.compressImg(image, 0.5)
+              }
+              this.previewFiles.push(compressImg)
+            }
           }
-
-          const objectURL = URL.createObjectURL(file)
-          this.previewFiles.push(objectURL)
         }
       })
     },

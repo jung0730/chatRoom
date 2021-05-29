@@ -19,7 +19,7 @@
           <v-col cols="6"
                  :offset="checkUser(item.nickname) ? 0 : 6">
             <div :class="checkUser(item.nickname) ? 'left-dialog-box' : 'right-dialog-box'">
-              <v-avatar v-show="item.nickname !== nickname"
+              <v-avatar v-if="item.nickname !== nickname"
                         color="secondaryDark"
                         size="56"
                         class="mr-2"
@@ -27,8 +27,11 @@
                 {{ item.nickname.charAt(0) }}
               </v-avatar>
               <div :class="checkUser(item.nickname) ? 'left-dialog-message' : 'right-dialog-message'">
-                <template v-if="item.message.includes('image')">
-                    <img :src="item.message">
+                <template v-if="Array.isArray(item.message)">
+                  <div v-for="(img, index) in item.message"
+                       :key="index">
+                    <img :src="img">
+                  </div>
                 </template>
                 <template v-else>
                   <span>
@@ -69,14 +72,11 @@ export default {
   },
   created() {
     this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/${this.$route.params.roomId}?userId=${this.id}`)
-    // this.ws.binaryType = 'arraybuffer'
     this.ws.onopen = (e) => { console.log(e) }
     this.ws.onmessage = (e) => {
       console.log(e.data)
       const data = JSON.parse(e.data)
       this.messages.push(data)
-      // const data = e.data.includes('blob') ? JSON.parse(e.data) : e.data
-      // this.messages.push(data)
     }
     this.ws.onerror = (e) => { console.log('error', e )}
   },
@@ -92,7 +92,7 @@ export default {
     },
     sendHandler(files) {
       if (this.message) this.ws.send(JSON.stringify({ nickname: this.nickname, message: this.message }))
-      if (files) this.ws.send(JSON.stringify({ nickname: this.nickname, message: files }))
+      if (files.length > 0) this.ws.send(JSON.stringify({ nickname: this.nickname, message: files }))
       this.message = ''
       this.$nextTick(() => {
         this.scrollToBottom()
