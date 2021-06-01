@@ -1,14 +1,7 @@
 <template>
   <v-container fluid
                class="rooms-container">
-    <v-row justify="end">
-      <v-col cols="6"
-             sm="6"
-             md="2">
-        <v-text-field label="Search"
-                      append-icon="mdi-magnify" />
-      </v-col>
-    </v-row>
+    <Navbar />
     <v-row justify="center">
       <p style="text-transform: capitalize">
         Hello, {{ nickname }}
@@ -59,7 +52,12 @@
       </v-dialog>
     </v-row>
     <v-row justify="center"
-           class="mt-16">
+           class="search">
+      <v-text-field label="Search"
+                    append-icon="mdi-magnify" />
+    </v-row>
+    <v-row justify="center"
+           class="mt-8">
       <v-col cols="10"
              sm="7"
              md="4">
@@ -68,7 +66,7 @@
                 elevation="2"
                 class="mx-auto mb-8 card-deco">
           <v-card-title>
-            {{ room.name }}
+            {{ room.name }} ({{ room.number }} people online now)
           </v-card-title>
           <v-card-subtitle
             style="text-transform: capitalize">
@@ -96,8 +94,12 @@
   </v-container>
 </template>
 <script>
+import Navbar from '@/components/Navbar'
 export default {
   name: 'Rooms',
+  components: {
+    Navbar
+  },
   data() {
     return {
       topicName: '',
@@ -184,6 +186,11 @@ export default {
   transform: translateY(100%);
 }
 .v-dialog__content {
-  align-items: flex-start
+  align-items: flex-start;
+}
+.search {
+  width: 20%;
+  margin: 0 auto;
+  margin-top: 2rem;
 }
 </style>

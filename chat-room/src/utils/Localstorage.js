@@ -14,7 +14,16 @@ const getLocalstorage = (key) => {
   }
 }
 
+const removeLocalstorage = (key = null) => {
+  if (key === null) {
+    localStorage.clear()
+  } else {
+    localStorage.removeItem(key)
+  }
+}
+
 export {
   setLocalstorage,
-  getLocalstorage
+  getLocalstorage,
+  removeLocalstorage
 }

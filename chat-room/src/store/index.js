@@ -13,6 +13,10 @@ export default new Vuex.Store({
   actions: {
     initEnvironment: async ({ dispatch}) => {
       dispatch('Environment/init')
+    },
+    reset({ dispatch }) {
+      dispatch('CodeTable/reset')
+      dispatch('Rooms/reset')
     }
   },
   modules: {

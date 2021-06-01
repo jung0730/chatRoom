@@ -1,6 +1,7 @@
 <template>
   <v-container fluid
                class="room-container">
+    <Navbar />
     <v-container class="chat-container">
       <!--<v-btn elevation="4"
              absolute
@@ -50,10 +51,12 @@
 </template>
 <script>
 import EditableDiv from '@/components/EditableDiv'
+import Navbar from '@/components/Navbar'
 export default {
   name: 'Room',
   components: {
-    EditableDiv
+    EditableDiv,
+    Navbar
   },
   data() {
     return {
@@ -127,7 +130,7 @@ export default {
 }
 .message-area {
   overflow-x: hidden;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 200px);
 }
 .left-dialog, .right-dialog {
   &-box {

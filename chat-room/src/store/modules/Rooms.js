@@ -10,7 +10,13 @@ const state = {
   },
   createdRoom: {}
 }
+const RAW_STATE = { ...state }
 const mutations = {
+  RESET(state, resetData) {
+    Object.keys(state).forEach(key => {
+      state[key] = resetData[key]
+    })
+  },
   SET_LIST(state, data) {
     state.rooms = data.map(el => {
       return {
@@ -33,6 +39,7 @@ const mutations = {
   }
 }
 const actions = {
+  reset({ commit }) { commit('RESET', RAW_STATE) },
   getRooms: async ({ commit, state, dispatch }) => {
     try {
       const parameter = []
