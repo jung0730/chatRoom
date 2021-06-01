@@ -54,7 +54,9 @@
     <v-row justify="center"
            class="search">
       <v-text-field label="Search"
-                    append-icon="mdi-magnify" />
+                    append-icon="mdi-magnify"
+                    v-model="keyword"
+                    @keyup.enter.native="search" />
     </v-row>
     <v-row justify="center"
            class="mt-8">
@@ -104,7 +106,8 @@ export default {
     return {
       topicName: '',
       roomName: '',
-      isShowDialog: false
+      isShowDialog: false,
+      keyword: ''
     }
   },
   computed: {
@@ -121,6 +124,10 @@ export default {
   methods: {
     enter(id) {
       this.$router.push(`/room/${id}`)
+    },
+    async search() {
+      await this.$store.dispatch('Rooms/setKeyword', this.keyword)
+      this.$store.dispatch('Rooms/getRooms').catch(e => console.log(e))
     },
     async addHandler() {
       if (this.topicName && this.roomName) {

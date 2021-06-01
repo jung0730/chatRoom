@@ -36,10 +36,14 @@ const mutations = {
       topic: data.topic || '',
       host: data.owner || ''
     }
+  },
+  SET_KEYWORD(state, val) {
+    state.condition.name = val
   }
 }
 const actions = {
   reset({ commit }) { commit('RESET', RAW_STATE) },
+  setKeyword: ({ commit }, val) => { commit('SET_KEYWORD', val) },
   getRooms: async ({ commit, state, dispatch }) => {
     try {
       const parameter = []
