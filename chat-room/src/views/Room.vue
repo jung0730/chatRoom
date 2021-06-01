@@ -20,13 +20,20 @@
           <v-col cols="6"
                  :offset="checkUser(item.nickname) ? 0 : 6">
             <div :class="checkUser(item.nickname) ? 'left-dialog-box' : 'right-dialog-box'">
-              <v-avatar v-if="item.nickname !== nickname"
-                        color="secondaryDark"
-                        size="56"
-                        class="mr-2"
-                        style="text-transform:capitalize">
-                {{ item.nickname.charAt(0) }}
-              </v-avatar>
+              <v-tooltip v-if="item.nickname !== nickname"
+                         top>
+                <template v-slot:activator="{on, attrs}">
+                  <v-avatar color="secondaryDark"
+                            size="56"
+                            class="mr-2"
+                            style="text-transform:capitalize"
+                            v-bind="attrs"
+                            v-on="on">
+                  {{ item.nickname.charAt(0) }}
+                  </v-avatar>
+                </template>
+                <span> {{ item.nickname }} </span>
+              </v-tooltip>
               <div :class="checkUser(item.nickname) ? 'left-dialog-message' : 'right-dialog-message'">
                 <template v-if="item.message.includes('data:image')">
                   <img :src="item.message">
