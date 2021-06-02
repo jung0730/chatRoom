@@ -53,9 +53,9 @@
     </v-row>
     <v-row justify="center"
            class="search">
-      <v-text-field label="Search"
+      <v-text-field v-model="keyword"
+                    label="Search"
                     append-icon="mdi-magnify"
-                    v-model="keyword"
                     @keyup.enter.native="search" />
     </v-row>
     <v-row justify="center"

@@ -29,7 +29,7 @@
                             style="text-transform:capitalize"
                             v-bind="attrs"
                             v-on="on">
-                  {{ item.nickname.charAt(0) }}
+                    {{ item.nickname.charAt(0) }}
                   </v-avatar>
                 </template>
                 <span> {{ item.nickname }} </span>
