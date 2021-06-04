@@ -49,7 +49,7 @@ export default {
           this.userName = ''
           this.$router.push('/rooms')
         }).catch(e => {
-          this.$notify(e)
+          this.$notify(e.message)
         }).finally(() => {
           this.isLoading = false
         })

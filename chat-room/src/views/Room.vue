@@ -77,20 +77,18 @@ export default {
     id() { return this.$store.state.Environment.id || '' },
     nickname() { return this.$store.state.Environment.nickname || '' }
   },
-  created() {
-    this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/${this.$route.params.roomId}?userId=${this.id}`)
+  async created() {
+    await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => this.$notify(e.message))
+    this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/club/${this.$route.params.roomId}?userId=${this.id}`)
     this.ws.onopen = (e) => { console.log(e) }
     this.ws.onmessage = (e) => {
       const data = JSON.parse(e.data)
       this.messages.push(data)
     }
-    this.ws.onerror = (e) => { console.log('error', e )}
+    this.ws.onerror = (e) => { console.log('error room', e.message )}
   },
   destroyed() {
     this.ws.close()
-  },
-  mounted() {
-    this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => this.notify(e))
   },
   methods: {
     checkUser(nickname) {

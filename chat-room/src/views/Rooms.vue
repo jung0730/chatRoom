@@ -107,19 +107,31 @@ export default {
       topicName: '',
       roomName: '',
       isShowDialog: false,
-      keyword: ''
+      keyword: '',
+      ws: null
     }
   },
   computed: {
+    userId() { return this.$store.state.Environment.id || ''},
     rooms() { return this.$store.state.Rooms.rooms || [] },
     nickname() { return this.$store.state.Environment.nickname || '' },
     roomId() { return this.$store.state.Rooms.createdRoom.id || '' },
     codes() { return this.$store.state.CodeTable.codes?.clubs_topic || [] },
     topics() { return this.codes.map(el => el.Option) || []}
   },
-  mounted() {
-    this.$store.dispatch('Rooms/getRooms').catch(e => this.notify(e))
-    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => this.notify(e))
+  async created() {
+    await this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e.message))
+    await this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => this.$notify(e.message))
+    this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/user/${this.userId}`)
+    this.ws.onopen = (e) => { console.log(e) }
+    this.ws.onmessage = (e) => {
+      const data = JSON.parse(e.data)
+      this.messages.push(data)
+    }
+    this.ws.onerror = (e) => { console.log('error user', e )}
+  },
+  destroyed() {
+    this.ws.close()
   },
   methods: {
     enter(id) {
@@ -127,7 +139,7 @@ export default {
     },
     async search() {
       await this.$store.dispatch('Rooms/setKeyword', this.keyword)
-      this.$store.dispatch('Rooms/getRooms').catch(e => this.notify(e))
+      this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e.message))
     },
     async addHandler() {
       if (this.topicName && this.roomName) {
@@ -139,7 +151,7 @@ export default {
           this.roomName = ''
           this.$router.push(`/room/${this.roomId}`)
         }).catch(e => {
-          this.$notify(e)
+          this.$notify(e.message)
         })
       }
     }
