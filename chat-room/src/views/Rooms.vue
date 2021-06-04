@@ -118,8 +118,8 @@ export default {
     topics() { return this.codes.map(el => el.Option) || []}
   },
   mounted() {
-    this.$store.dispatch('Rooms/getRooms').catch(e => console.log(e))
-    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => console.log(e))
+    this.$store.dispatch('Rooms/getRooms').catch(e => this.notify(e))
+    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => this.notify(e))
   },
   methods: {
     enter(id) {
@@ -127,7 +127,7 @@ export default {
     },
     async search() {
       await this.$store.dispatch('Rooms/setKeyword', this.keyword)
-      this.$store.dispatch('Rooms/getRooms').catch(e => console.log(e))
+      this.$store.dispatch('Rooms/getRooms').catch(e => this.notify(e))
     },
     async addHandler() {
       if (this.topicName && this.roomName) {
@@ -139,7 +139,7 @@ export default {
           this.roomName = ''
           this.$router.push(`/room/${this.roomId}`)
         }).catch(e => {
-          // handle error
+          this.$notify(e)
         })
       }
     }

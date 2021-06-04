@@ -90,7 +90,7 @@ export default {
     this.ws.close()
   },
   mounted() {
-    this.$store.dispatch('Room/getRoom', this.$route.params.roomId)
+    this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => this.notify(e))
   },
   methods: {
     checkUser(nickname) {

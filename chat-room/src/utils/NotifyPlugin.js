@@ -1,24 +1,21 @@
 import Vue from 'vue'
 import Notify from '@/components/Notify'
 
-const notify = function(title = '', options = {}) {
-  const instanceData = Object.assign({}, {})
-  const instance = (() => {
-    const NotifyConstructor = Vue.extend(Notify)
-    const node = document.createElement('div')
-    document.querySelector('body').appendChild(node)
-
-    const Vm = new NotifyConstructor({
-      data: instanceData
-    })
-
-    return Vm.$mount(node)
-  })()
-
-  return instance.handleNotify()
+const notify = function(errorMessage = '') {
+  // create constructor
+  const NotifyConstructor = Vue.extend(Notify)
+  // create an instance
+  const Vm = new NotifyConstructor({
+    data: Object.assign({}, { errorMessage })
+  })
+  const node = document.createElement('div')
+  document.querySelector('body').appendChild(node)
+  // mount it on an element
+  return Vm.$mount(node)
 }
 
-const install = function(Vue, options) {
+// attach it to Vue.prototype
+const plugin = function(Vue) {
   Object.defineProperties(Vue.prototype, {
     $notify: {
       get() {
@@ -28,7 +25,4 @@ const install = function(Vue, options) {
   })
 }
 
-const NotifyPlugin = {
-  install
-}
-export default NotifyPlugin
+export default plugin

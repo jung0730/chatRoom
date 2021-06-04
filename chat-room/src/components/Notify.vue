@@ -2,10 +2,10 @@
   <Lightbox :visible="visible">
       <v-card width="500">
         <v-card-title class="justify-center">
-          Alert
+          Error
         </v-card-title>
         <v-card-text class="text-center">
-          error message blablabla
+          {{ errorMessage }}
         </v-card-text>
         <v-card-actions class="justify-center">
           <v-btn color="primary"
@@ -27,16 +27,10 @@ export default {
   data() {
     return {
       visible: true,
-      handlePromise: null
+      errorMessage: ''
     }
   },
   methods: {
-    handleNotify() {
-      this.visible = true
-      return new Promise((resolve, reject) => {
-        this.handlePromise = { resolve, reject }
-      })
-    },
     closeDialog() {
       this.visible = false
     }
