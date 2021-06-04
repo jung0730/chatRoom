@@ -1,5 +1,5 @@
 import { login } from '@/api/Environment'
-import { setLocalstorage, getLocalstorage } from '@/utils/Localstorage'
+import { setSessionstorage, getSessionstorage } from '@/utils/Sessionstorage'
 import axios from 'axios'
 
 const state = {
@@ -20,9 +20,9 @@ const mutations = {
 }
 const actions = {
   init: async ({ commit, dispatch }) => {
-    const uid = getLocalstorage('UID')
-    const nickname = getLocalstorage('nickname')
-    const id = getLocalstorage('id')
+    const uid = getSessionstorage('UID')
+    const nickname = getSessionstorage('nickname')
+    const id = getSessionstorage('id')
     if (uid !== null) {
       commit('SET_UID', uid)
       commit('SET_NICKNAME', nickname)
@@ -40,9 +40,9 @@ const actions = {
         commit('SET_UID', uid)
         commit('SET_NICKNAME', nickname)
         commit('SET_ID', id)
-        setLocalstorage('UID', uid)
-        setLocalstorage('nickname', nickname)
-        setLocalstorage('id', id)
+        setSessionstorage('UID', uid)
+        setSessionstorage('nickname', nickname)
+        setSessionstorage('id', id)
         axios.defaults.headers.common['X-Request-UID'] = uid
       } else {
         throw new Error('error')

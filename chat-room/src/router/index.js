@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Rooms from '../views/Rooms.vue'
 import Room from '../views/Room.vue'
-import { getLocalstorage } from '@/utils/Localstorage'
+import { getSessionstorage } from '@/utils/Sessionstorage'
 
 Vue.use(VueRouter)
 
@@ -51,7 +51,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const uid = getLocalstorage('UID')
+  const uid = getSessionstorage('UID')
   const hasUID = !!uid
   if (!hasUID) {
     if (to.name === 'Login') {

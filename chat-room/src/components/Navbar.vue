@@ -11,12 +11,12 @@
   </v-row>
 </template>
 <script>
-import { removeLocalstorage } from '@/utils/Localstorage'
+import { removeSessionstorage } from '@/utils/Sessionstorage'
 export default {
   name: 'Navbar',
   methods: {
     logout() {
-      removeLocalstorage()
+      removeSessionstorage()
       this.$store.dispatch('reset')
       this.$router.push('/login')
     }
