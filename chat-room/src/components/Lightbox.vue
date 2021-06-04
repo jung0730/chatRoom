@@ -3,7 +3,7 @@
        class="lightbox-container">
     <div class="lightbox" />
     <v-card>
-      <slot/>
+      <slot />
     </v-card>
   </div>
 </template>

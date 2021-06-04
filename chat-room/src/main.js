@@ -4,7 +4,7 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import Notify from '@/utils/NotifyPlugin'
+import Notify from './utils/NotifyPlugin'
 
 Vue.config.productionTip = false
 Vue.use(Notify)
