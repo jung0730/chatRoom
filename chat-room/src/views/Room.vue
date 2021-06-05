@@ -59,7 +59,6 @@ export default {
     return {
       messages: [],
       message: '',
-      userWs: null,
       roomWs: null
     }
   },
@@ -73,7 +72,6 @@ export default {
       this.$notify(e.message)
       this.$router.go(-1)
     })
-    await this.connectUserWs()
     this.connectRoomWs()
   },
   methods: {
@@ -101,18 +99,6 @@ export default {
       this.roomWs.onmessage = (e) => {
         const data = JSON.parse(e.data)
         this.messages.push(data)
-      }
-    },
-    connectUserWs() {
-      if ('WebSocket' in window) {
-        this.userWs = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/user/${this.id}`)
-        this.userWs.onopen = () => { console.log('user connected') }
-        this.userWs.onmessage = (e) => {
-          const data = JSON.parse(e.data)
-          if (data.error.message) this.$notify(data.error.message)
-        }
-      } else {
-        this.$notify('WebSocket not supported by your browser!')
       }
     }
   }
