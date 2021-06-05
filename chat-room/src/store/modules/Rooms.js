@@ -72,18 +72,6 @@ const actions = {
     } catch(e) {
       throw e
     }
-  },
-  getDropdown: async ({ commit, state, dispatch }) => {
-    try {
-      const { data } = await getDropdown()
-      if (data) {
-        console.log(data, 'code')
-      } else {
-        throw new error('error')
-      }
-    } catch(e) {
-      throw e
-    }
   }
 }
 

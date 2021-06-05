@@ -3,16 +3,6 @@
                class="room-container">
     <Navbar />
     <v-container class="chat-container">
-      <!--<v-btn elevation="4"
-             absolute
-             left
-             dark
-             color="normal"
-             class="leave-button"
-             fab
-             @click="leave">
-        Leave
-      </v-btn> -->
       <div ref="messageArea"
            class="message-area">
         <v-row v-for="(item, idx) in messages"
@@ -69,7 +59,8 @@ export default {
     return {
       messages: [],
       message: '',
-      ws: null
+      userWs: null,
+      roomWs: null
     }
   },
   computed: {
@@ -78,17 +69,12 @@ export default {
     nickname() { return this.$store.state.Environment.nickname || '' }
   },
   async created() {
-    await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => this.$notify(e.message))
-    this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/club/${this.$route.params.roomId}?userId=${this.id}`)
-    this.ws.onopen = (e) => { console.log(e) }
-    this.ws.onmessage = (e) => {
-      const data = JSON.parse(e.data)
-      this.messages.push(data)
-    }
-    this.ws.onerror = (e) => { console.log('error room', e.message )}
-  },
-  destroyed() {
-    this.ws.close()
+    await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {
+      this.$notify(e.message)
+      this.$router.go(-1)
+    })
+    await this.connectUserWs()
+    this.connectRoomWs()
   },
   methods: {
     checkUser(nickname) {
@@ -108,15 +94,27 @@ export default {
     },
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
+    },
+    connectRoomWs() {
+      this.roomWs = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/club/${this.$route.params.roomId}?userId=${this.id}`)
+      this.roomWs.onopen = () => { console.log('room connected') }
+      this.roomWs.onmessage = (e) => {
+        const data = JSON.parse(e.data)
+        this.messages.push(data)
+      }
+    },
+    connectUserWs() {
+      if ('WebSocket' in window) {
+        this.userWs = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/user/${this.id}`)
+        this.userWs.onopen = () => { console.log('user connected') }
+        this.userWs.onmessage = (e) => {
+          const data = JSON.parse(e.data)
+          if (data.error.message) this.$notify(data.error.message)
+        }
+      } else {
+        this.$notify('WebSocket not supported by your browser!')
+      }
     }
-    // async leave() {
-    //   await this.$store.dispatch('Room/leave')
-    //   .then(data => {
-    //     this.$router.push('/rooms')
-    //   }).catch(e => {
-    //     // handle error
-    //   })
-    // }
   }
 }
 </script>

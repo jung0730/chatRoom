@@ -122,18 +122,21 @@ export default {
   async created() {
     await this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e.message))
     await this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => this.$notify(e.message))
-    this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/user/${this.userId}`)
-    this.ws.onopen = (e) => { console.log(e) }
-    this.ws.onmessage = (e) => {
-      const data = JSON.parse(e.data)
-      this.messages.push(data)
-    }
-    this.ws.onerror = (e) => { console.log('error user', e )}
-  },
-  destroyed() {
-    this.ws.close()
+    this.connectWs()
   },
   methods: {
+    connectWs() {
+      if ('WebSocket' in window) {
+        this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/user/${this.userId}`)
+        this.ws.onopen = () => { console.log('user connected') }
+        this.ws.onmessage = (e) => {
+          const data = JSON.parse(e.data)
+          if (data.error.message) this.$notify(data.error.message)
+        }
+      } else {
+        this.$notify('WebSocket not supported by your browser!')
+      }
+    },
     enter(id) {
       this.$router.push(`/room/${id}`)
     },
