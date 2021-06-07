@@ -74,6 +74,9 @@ export default {
     })
     this.connectRoomWs()
   },
+  destroyed() {
+    this.roomWs.close()
+  },
   methods: {
     checkUser(nickname) {
       return nickname !== this.nickname

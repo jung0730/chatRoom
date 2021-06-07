@@ -15,7 +15,11 @@ export default {
   },
   watch: {
     userId(newVal, oldVal) {
-      if (newVal !== oldVal && newVal) this.connectWs()
+      if (newVal !== oldVal && newVal) {
+        this.connectWs()
+      } else {
+        this.ws.close()
+      }
     }
   },
   created() {
