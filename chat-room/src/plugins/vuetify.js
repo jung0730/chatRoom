@@ -1,36 +1,6 @@
 import Vue from 'vue'
-import Vuetify, {
-  VContainer,
-  VRow,
-  VCol,
-  VTextField,
-  VBtn,
-  VIcon,
-  VDialog,
-  VSelect,
-  VCard,
-  VCardTitle,
-  VCardSubtitle,
-  VCardText,
-  VAvatar
-} from 'vuetify/lib'
-Vue.use(Vuetify, {
-  components: {
-    VContainer,
-    VRow,
-    VCol,
-    VTextField,
-    VBtn,
-    VIcon,
-    VDialog,
-    VSelect,
-    VCard,
-    VCardTitle,
-    VCardSubtitle,
-    VCardText,
-    VAvatar
-  }
-})
+import Vuetify from 'vuetify/lib'
+Vue.use(Vuetify)
 
 export default new Vuetify({
   theme: {
