@@ -1,5 +1,7 @@
+import { encode, decode } from '@/utils/Base64'
+
 const setSessionstorage = (key, value) => {
-  sessionStorage.setItem(key, JSON.stringify(value))
+  sessionStorage.setItem(key, encode(JSON.stringify(value)))
 }
 
 const getSessionstorage = (key) => {
@@ -7,7 +9,7 @@ const getSessionstorage = (key) => {
     return null
   } else {
     try {
-      return JSON.parse(sessionStorage.getItem(key))
+      return JSON.parse(decode(sessionStorage.getItem(key)))
     } catch(e) {
       return null
     }
