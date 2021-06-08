@@ -17,6 +17,7 @@ export default new Vuex.Store({
     reset({ dispatch }) {
       dispatch('CodeTable/reset')
       dispatch('Rooms/reset')
+      dispatch('Environment/reset')
     }
   },
   modules: {

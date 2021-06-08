@@ -5,9 +5,16 @@ import axios from 'axios'
 const state = {
   uid: '',
   nickname: '',
-  id: ''
+  id: '',
+  hostId: ''
 }
+const RAW_STATE = { ...state }
 const mutations = {
+  RESET(state, resetData) {
+    Object.keys(state).forEach(key => {
+      state[key] = resetData[key]
+    })
+  },
   SET_UID(state, uid) {
     state.uid = uid
   },
@@ -16,17 +23,23 @@ const mutations = {
   },
   SET_ID(state, id) {
     state.id = id
+  },
+  SET_HOST_ID(state, id) {
+    state.hostId = id
   }
 }
 const actions = {
+  reset({ commit }) { commit('RESET', RAW_STATE) },
   init: async ({ commit, dispatch }) => {
     const uid = getSessionstorage('UID')
     const nickname = getSessionstorage('nickname')
     const id = getSessionstorage('id')
+    const hostId = getSessionstorage('hostId')
     if (uid !== null) {
       commit('SET_UID', uid)
       commit('SET_NICKNAME', nickname)
       commit('SET_ID', id)
+      commit('SET_HOST_ID', hostId)
       axios.defaults.headers.common['X-Request-UID'] = uid
     }
   },
@@ -50,6 +63,13 @@ const actions = {
     } catch(e) {
       throw e
     }
+  },
+  setHostId: async ({ commit, dispatch }, id) => {
+    commit('SET_HOST_ID', id)
+    setSessionstorage('hostId', id)
+  },
+  resetHostId: async ({ commit, dispatch }, id) => {
+    commit('SET_HOST_ID', id)
   }
 }
 

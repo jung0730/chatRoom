@@ -49,6 +49,7 @@
 <script>
 import EditableDiv from '@/components/EditableDiv'
 import Navbar from '@/components/Navbar'
+import { removeSessionstorage } from '@/utils/Sessionstorage'
 export default {
   name: 'Room',
   components: {
@@ -65,17 +66,22 @@ export default {
   computed: {
     room() { return this.$store.state.Rooms.createdRoom || {} },
     id() { return this.$store.state.Environment.id || '' },
-    nickname() { return this.$store.state.Environment.nickname || '' }
+    nickname() { return this.$store.state.Environment.nickname || '' },
+    hostId() { return this.$store.state.Environment.hostId || ''}
   },
   async created() {
-    await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {
-      this.$notify(e.message)
-      this.$router.go(-1)
-    })
+    if (this.hostId) {
+      await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {
+        this.$notify(e.message)
+        this.$router.go(-1)
+      })
+    }
     this.connectRoomWs()
   },
   destroyed() {
     this.roomWs.close()
+    removeSessionstorage('hostId')
+    this.$store.dispatch('Environment/resetHostId', '')
   },
   methods: {
     checkUser(nickname) {

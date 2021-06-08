@@ -33,6 +33,7 @@ export default {
         const data = JSON.parse(e.data)
         if (data.error.message) this.$notify(data.error.message)
       }
+      this.ws.onerror = () => { console.log('user error') }
     }
   }
 }

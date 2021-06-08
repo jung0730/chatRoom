@@ -21,6 +21,7 @@ const mutations = {
     state.rooms = data.map(el => {
       return {
         host: el.owner?.nickname || '',
+        hostId: el.owner?.id || '',
         clubId: el.owner?.clubId || '',
         number: el.population || 0,
         name: el.clubName || '',

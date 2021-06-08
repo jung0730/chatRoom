@@ -87,7 +87,7 @@
                  right
                  small
                  fab
-                 @click="enter(room.id)">
+                 @click="enter(room)">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card>
@@ -122,8 +122,9 @@ export default {
     this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => this.$notify(e.message))
   },
   methods: {
-    enter(id) {
-      this.$router.push(`/room/${id}`)
+    enter(room) {
+      this.$store.dispatch('Environment/setHostId', room.hostId)
+      this.$router.push(`/room/${room.id}`)
     },
     async search() {
       await this.$store.dispatch('Rooms/setKeyword', this.keyword)
