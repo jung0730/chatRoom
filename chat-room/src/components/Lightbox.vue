@@ -2,9 +2,9 @@
   <div v-if="visible"
        class="lightbox-container">
     <div class="lightbox" />
-    <v-card>
+    <div class="custom-card-container">
       <slot />
-    </v-card>
+    </div>
   </div>
 </template>
 <script>
@@ -37,5 +37,13 @@ export default {
   bottom: 0;
   right: 0;
   background-color: rgba(0,0,0,0.9)
+}
+.custom-card-container {
+  background: white;
+  width: auto;
+  height: auto;
+  z-index: 10;
+  border-radius: 0.25rem;
+  overflow: hidden;
 }
 </style>

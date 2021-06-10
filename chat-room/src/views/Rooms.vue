@@ -72,7 +72,7 @@
             {{ room.name }} ({{ room.number }} people online now)
           </v-card-title>
           <v-card-subtitle data-test="subtitle"
-            style="text-transform: capitalize">
+                           style="text-transform: capitalize">
             {{ room.topic }}
           </v-card-subtitle>
           <v-card-text data-test="text">
@@ -118,9 +118,9 @@ export default {
     codes() { return this.$store.state.CodeTable.codes?.clubs_topic || [] },
     topics() { return this.codes.map(el => el.Option) || []}
   },
-  created() {
+  created() { 
     this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e.message))
-    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(e => this.$notify(e.message))
+    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic'])
   },
   methods: {
     enter(room) {

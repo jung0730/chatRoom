@@ -1,20 +1,19 @@
 <template>
   <Lightbox :visible="visible">
-    <v-card width="500">
-      <v-card-title class="justify-center">
+    <div class="custom-card">
+      <div class="custom-card-title">
         Error
-      </v-card-title>
-      <v-card-text class="text-center">
+      </div>
+      <div class="custom-card-message">
         {{ errorMessage }}
-      </v-card-text>
-      <v-card-actions class="justify-center">
-        <v-btn color="primary"
-               depressed
-               @click="closeDialog">
+      </div>
+      <div class="custom-card-action">
+        <button class="custom-card-action-button"
+                @click="closeDialog">
           OK
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+        </button>
+      </div>
+    </div>
   </Lightbox>
 </template>
 <script>
@@ -33,7 +32,37 @@ export default {
   methods: {
     closeDialog() {
       this.visible = false
+      this.$nextTick(this.$destroy)
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+.custom-card {
+  width: 25rem;
+  text-align: center;
+  &-title {
+    font-weight: bold;
+    font-size: 2rem;
+    padding: 0.5rem;
+  }
+  &-message {
+    color: gray;
+    margin-bottom: 1rem;
+  }
+  &-action {
+    background-color: #0DA0D8;
+    color: white;
+    &-button {
+      width: 100%;
+      height: 100%;
+      outline: none;
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      &:hover {
+        background-color: #25a9db;
+      }
+    }
+  }
+}
+</style>
