@@ -70,18 +70,15 @@ export default {
     hostId() { return this.$store.state.Environment.hostId || ''}
   },
   async created() {
-    if (this.hostId) {
-      await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {
-        this.$notify(e.message)
-        this.$router.go(-1)
-      })
-    }
+    await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {
+      this.$notify(e.message)
+      this.$router.go(-1)
+    })
     this.connectRoomWs()
   },
   destroyed() {
     this.roomWs.close()
-    removeSessionstorage('hostId')
-    this.$store.dispatch('Environment/resetHostId', '')
+    this.store.dispatch('Room/leave')
   },
   methods: {
     checkUser(nickname) {

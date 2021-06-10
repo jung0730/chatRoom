@@ -5,8 +5,7 @@ import axios from 'axios'
 const state = {
   uid: '',
   nickname: '',
-  id: '',
-  hostId: ''
+  id: ''
 }
 const RAW_STATE = { ...state }
 const mutations = {
@@ -23,9 +22,6 @@ const mutations = {
   },
   SET_ID(state, id) {
     state.id = id
-  },
-  SET_HOST_ID(state, id) {
-    state.hostId = id
   }
 }
 const actions = {
@@ -34,12 +30,10 @@ const actions = {
     const uid = getSessionstorage('UID')
     const nickname = getSessionstorage('nickname')
     const id = getSessionstorage('id')
-    const hostId = getSessionstorage('hostId')
     if (uid !== null) {
       commit('SET_UID', uid)
       commit('SET_NICKNAME', nickname)
       commit('SET_ID', id)
-      commit('SET_HOST_ID', hostId)
       axios.defaults.headers.common['X-Request-UID'] = uid
     }
   },
@@ -63,13 +57,6 @@ const actions = {
     } catch(e) {
       throw e
     }
-  },
-  setHostId: async ({ commit, dispatch }, id) => {
-    commit('SET_HOST_ID', id)
-    setSessionstorage('hostId', id)
-  },
-  resetHostId: async ({ commit, dispatch }, id) => {
-    commit('SET_HOST_ID', id)
   }
 }
 
