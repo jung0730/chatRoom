@@ -10,13 +10,11 @@
     <v-row justify="center">
       <v-dialog v-model="isShowDialog"
                 width="600"
-                overlay-opacity="0.9"
-                data-test="dialog">
+                overlay-opacity="0.9">
         <template v-slot:activator="{ on, attrs}">
           <v-btn color="primary"
                  large
                  depressed
-                 data-test="btn"
                  v-bind="attrs"
                  v-on="on">
             Start a room
@@ -29,12 +27,14 @@
               <v-select v-model="topicName"
                         :items="topics"
                         class="mt-6"
-                        label="Topic Category" />
+                        label="Topic Category"
+                        data-test="topic" />
             </v-row>
             <v-row>
               <v-col cols="8">
                 <v-text-field v-model.trim="roomName"
                               label="Room Name"
+                              data-test="roomName"
                               clearable />
               </v-col>
               <v-col cols="3">
@@ -42,6 +42,7 @@
                        color="primary"
                        large
                        depressed
+                       data-test="createBtn"
                        @click.prevent="addHandler">
                   Let's go!
                 </v-btn>
@@ -67,14 +68,14 @@
                 :key="idx"
                 elevation="2"
                 class="mx-auto mb-8 card-deco">
-          <v-card-title>
+          <v-card-title data-test="title">
             {{ room.name }} ({{ room.number }} people online now)
           </v-card-title>
-          <v-card-subtitle
+          <v-card-subtitle data-test="subtitle"
             style="text-transform: capitalize">
             {{ room.topic }}
           </v-card-subtitle>
-          <v-card-text>
+          <v-card-text data-test="text">
             Hosted by
             <span style="text-transform: capitalize">
               {{ room.host }}
