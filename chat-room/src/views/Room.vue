@@ -66,8 +66,7 @@ export default {
   computed: {
     room() { return this.$store.state.Rooms.createdRoom || {} },
     id() { return this.$store.state.Environment.id || '' },
-    nickname() { return this.$store.state.Environment.nickname || '' },
-    hostId() { return this.$store.state.Environment.hostId || ''}
+    nickname() { return this.$store.state.Environment.nickname || '' }
   },
   async created() {
     await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {
@@ -84,10 +83,10 @@ export default {
       return nickname !== this.nickname
     },
     sendHandler(files) {
-      if (this.message) this.ws.send(JSON.stringify({ nickname: this.nickname, message: this.message }))
+      if (this.message) this.roomWs.send(JSON.stringify({ nickname: this.nickname, message: this.message }))
       if (files.length > 0) {
         files.forEach(file => {
-          this.ws.send(JSON.stringify({ nickname: this.nickname, message: file }))
+          this.roomWs.send(JSON.stringify({ nickname: this.nickname, message: file }))
         })
       }
       this.message = ''
