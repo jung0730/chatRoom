@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-// ref: https://github.com/Cobertos/vue-input-contenteditable/blob/master/src/input-contenteditable.vue
+// ref: https://github.com/hl037/vue-contenteditable/blob/master/src/components/contenteditable.vue
 export default {
   props: {
     value: {
@@ -35,9 +35,9 @@ export default {
     }
   },
   watch: {
-    value() {
-      if (this.value !== this.$refs.contentEditable.innerText) {
-        this.$refs.contentEditable.textContent = this.value
+    value(newVal, oldVal) {
+      if( newVal !== this.$refs.contentEditable.textContent) {
+        this.$refs.contentEditable.textContent = ''
       }
     }
   },
@@ -109,9 +109,7 @@ export default {
   width: 100%;
   height: 80px;
   outline: none;
-  white-space: pre-line;
-  overflow-wrap: break-word;
-  display: inline-block;
+  white-space: pre-wrap;
   overflow-x: hidden;
 }
 .message:empty::before {
