@@ -59,7 +59,7 @@ const actions = {
         throw new error('error')
       }
     } catch(e) {
-      throw e
+      throw e.response.data.error.message
     }
   },
   addRoom: async ({ commit, state, dispatch }, obj) => {
@@ -71,8 +71,7 @@ const actions = {
         throw new error('error')
       }
     } catch(e) {
-      const error = e.response.data.error.message
-      throw error
+      throw e.response.data.error.message
     }
   }
 }

@@ -71,7 +71,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {
-      this.$notify(e.message)
+      this.$notify(e)
       this.$router.go(-1)
     })
     this.connectRoomWs()

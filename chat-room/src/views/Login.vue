@@ -46,11 +46,11 @@ export default {
         await this.$store.dispatch('Environment/login', {
           nickname: this.userName
         }).then(data => {
-          this.userName = ''
           this.$router.push('/rooms')
         }).catch(e => {
-          this.$notify(e.message)
+          this.$notify(e)
         }).finally(() => {
+          this.userName = ''
           this.isLoading = false
         })
       }

@@ -55,7 +55,7 @@ const actions = {
         throw new Error('error')
       }
     } catch(e) {
-      throw e
+      throw e.response.data.error.message
     }
   }
 }

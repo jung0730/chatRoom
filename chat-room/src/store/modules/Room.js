@@ -7,14 +7,14 @@ const actions = {
     try {
       await getRoom(id)
     } catch(e) {
-      throw e
+      throw e.response.data.error.message
     }
   },
   leave: async ({ commit, dispatch }) => {
     try {
       await leaveRoom()
     } catch(e) {
-      throw e
+      throw e.response.data.error.message
     }
   }
 }

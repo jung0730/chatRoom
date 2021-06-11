@@ -122,7 +122,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch('Room/leave')
-    this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e.message))
+    this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e))
     this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic'])
   },
   methods: {
@@ -131,7 +131,7 @@ export default {
     },
     async search() {
       await this.$store.dispatch('Rooms/setKeyword', this.keyword)
-      this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e.message))
+      this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e))
     },
     async addHandler() {
       if (this.topicName && this.roomName) {
@@ -140,13 +140,14 @@ export default {
           topic: this.topicName,
           clubName: this.roomName
         }).then(data => {
-          this.topicName = ''
-          this.roomName = ''
           this.$router.push(`/room/${this.roomId}`)
         }).catch(e => {
           this.$notify(e)
         }).finally(() => {
+          this.topicName = ''
+          this.roomName = ''
           this.loading = false
+          this.isShowDialog = false
         })
       }
     }
