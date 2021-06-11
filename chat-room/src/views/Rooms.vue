@@ -43,6 +43,7 @@
                        large
                        depressed
                        data-test="createBtn"
+                       :loading="loading"
                        @click.prevent="addHandler">
                   Let's go!
                 </v-btn>
@@ -108,7 +109,8 @@ export default {
       topicName: '',
       roomName: '',
       isShowDialog: false,
-      keyword: ''
+      keyword: '',
+      loading: false
     }
   },
   computed: {
@@ -118,13 +120,13 @@ export default {
     codes() { return this.$store.state.CodeTable.codes?.clubs_topic || [] },
     topics() { return this.codes.map(el => el.Option) || []}
   },
-  created() { 
+  async created() {
+    await this.$store.dispatch('Room/leave')
     this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e.message))
     this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic'])
   },
   methods: {
     enter(room) {
-      this.$store.dispatch('Environment/setHostId', room.hostId)
       this.$router.push(`/room/${room.id}`)
     },
     async search() {
@@ -133,6 +135,7 @@ export default {
     },
     async addHandler() {
       if (this.topicName && this.roomName) {
+        this.loading = true
         await this.$store.dispatch('Rooms/addRoom', {
           topic: this.topicName,
           clubName: this.roomName
@@ -141,7 +144,9 @@ export default {
           this.roomName = ''
           this.$router.push(`/room/${this.roomId}`)
         }).catch(e => {
-          this.$notify(e.message)
+          this.$notify(e)
+        }).finally(() => {
+          this.loading = false
         })
       }
     }

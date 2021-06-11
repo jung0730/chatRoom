@@ -76,9 +76,8 @@ export default {
     })
     this.connectRoomWs()
   },
-  destroyed() {
+  beforeDestroy() {
     this.roomWs.close()
-    this.store.dispatch('Room/leave')
   },
   methods: {
     checkUser(nickname) {
@@ -155,10 +154,6 @@ export default {
   &-message {
     background-color: #0DA0DB;    
   }
-}
-.leave-button {
-  top: 50%;
-  transform: translate(-100%, -50%)
 }
 img {
   width: 15rem;

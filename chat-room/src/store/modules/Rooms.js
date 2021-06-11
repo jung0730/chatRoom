@@ -64,14 +64,15 @@ const actions = {
   },
   addRoom: async ({ commit, state, dispatch }, obj) => {
     try {
-      const { data } = await postRoom(obj)
+      const { data }  = await postRoom(obj)
       if (data) {
         commit('SET_ROOM_NAME', data.data)
       } else {
         throw new error('error')
       }
     } catch(e) {
-      throw e
+      const error = e.response.data.error.message
+      throw error
     }
   }
 }
