@@ -1,7 +1,7 @@
 <template>
   <v-container fluid
                class="rooms-container">
-    <Navbar />
+    <Navbar :page="'list'"/>
     <v-row justify="center">
       <p style="text-transform: capitalize">
         Hello, {{ nickname }}

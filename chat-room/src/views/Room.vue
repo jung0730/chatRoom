@@ -1,7 +1,7 @@
 <template>
   <v-container fluid
                class="room-container">
-    <Navbar />
+    <Navbar :page="'room'"/>
     <v-container class="chat-container">
       <div ref="messageArea"
            class="message-area">
