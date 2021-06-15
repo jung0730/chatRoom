@@ -55,6 +55,7 @@
 import EditableDiv from '@/components/EditableDiv'
 import Navbar from '@/components/Navbar'
 import { removeSessionstorage } from '@/utils/Sessionstorage'
+import { mapState } from 'vuex'
 export default {
   name: 'Room',
   components: {
@@ -70,9 +71,7 @@ export default {
     }
   },
   computed: {
-    room() { return this.$store.state.Rooms.createdRoom || {} },
-    id() { return this.$store.state.Environment.id || '' },
-    nickname() { return this.$store.state.Environment.nickname || '' }
+    ...mapState('Environment', ['id', 'nickname']) 
   },
   async created() {
     await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {

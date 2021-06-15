@@ -98,6 +98,7 @@
 </template>
 <script>
 import Navbar from '@/components/Navbar'
+import { mapState } from 'vuex'
 export default {
   name: 'Rooms',
   components: {
@@ -113,11 +114,10 @@ export default {
     }
   },
   computed: {
-    rooms() { return this.$store.state.Rooms.rooms || [] },
-    nickname() { return this.$store.state.Environment.nickname || '' },
-    roomId() { return this.$store.state.Rooms.createdRoom.id || '' },
     codes() { return this.$store.state.CodeTable.codes?.clubs_topic || [] },
-    topics() { return this.codes.map(el => el.Option) || []}
+    topics() { return this.codes.map(el => el.Option) || [] },
+    ...mapState('Rooms', ['rooms', 'createdRoom']),
+    ...mapState('Environment', ['nickname'])
   },
   async created() {
     await this.$store.dispatch('Room/leave')
@@ -139,7 +139,7 @@ export default {
           topic: this.topicName,
           clubName: this.roomName
         }).then(data => {
-          this.$router.push(`/room/${this.roomId}`)
+          this.$router.push(`/room/${this.createdRoom.id}`)
         }).catch(e => {
           this.$notify(e)
         }).finally(() => {
