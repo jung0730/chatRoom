@@ -2,10 +2,8 @@
   <div class="editableDiv">
     <div class="file">
       <div v-for="(file, idx) in previewFiles"
-           :key="idx"
-           class="file-type">
-        <img :src="file"
-             class="file-img">
+           :key="idx">
+        <img :src="file">
         <v-btn icon
                absolute
                class="file-btn"
@@ -131,18 +129,18 @@ $primaryDark: #097bbd;
 }
 .file {
   display: flex;
-  &-type {
+  > div {
     position: relative;
-  }
-  &-img {
-    width: 3rem;
-    height: 3rem;
-    object-fit: cover;
-    margin-right: 0.5rem;
+    > img {
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
   }
   &-btn {
     top: -0.625rem;
-    right: -0.625rem;
+    right: -0.1rem;
   }
 }
 </style>

@@ -3,7 +3,7 @@
                class="rooms">
     <Navbar :page="'list'"/>
     <v-row justify="center">
-      <p style="text-transform: capitalize">
+      <p class="capitalize">
         Hello, {{ nickname }}
       </p>
     </v-row>
@@ -22,8 +22,7 @@
         </template>
         <v-card>
           <v-card-text>
-            <v-row class="mx-auto"
-                   style="width:100%">
+            <v-row class="mx-auto">
               <v-select v-model="topicName"
                         :items="topics"
                         class="mt-6"
@@ -35,11 +34,11 @@
                 <v-text-field v-model.trim="roomName"
                               label="Room Name"
                               data-test="roomName"
-                              clearable />
+                              clearable
+                              @keyup.enter.native="addHandler" />
               </v-col>
-              <v-col cols="3">
-                <v-btn class="mt-1 ml-1"
-                       color="primary"
+              <v-col cols="4">
+                <v-btn color="primary"
                        large
                        depressed
                        data-test="createBtn"
@@ -53,13 +52,13 @@
         </v-card>
       </v-dialog>
     </v-row>
-    <v-row justify="center"
+    <!--<v-row justify="center"
            class="search">
       <v-text-field v-model="keyword"
                     label="Search"
                     append-icon="mdi-magnify"
                     @keyup.enter.native="search" />
-    </v-row>
+    </v-row> -->
     <v-row justify="center"
            class="mt-8">
       <v-col cols="10"
@@ -68,22 +67,22 @@
         <v-card v-for="(room, idx) in rooms"
                 :key="idx"
                 elevation="2"
-                class="mx-auto mb-8 card-deco">
+                class="mb-8 custom-card">
           <v-card-title data-test="title">
-            {{ room.name }} ({{ room.number }} people online now)
+            {{ room.name }}
           </v-card-title>
-          <v-card-subtitle data-test="subtitle"
-                           style="text-transform: capitalize">
+          <v-card-subtitle data-test="subtitle">
             {{ room.topic }}
           </v-card-subtitle>
           <v-card-text data-test="text">
-            Hosted by
-            <span style="text-transform: capitalize">
-              {{ room.host }}
-            </span>
+            Hosted by {{ room.host }}
+            <div>
+              <v-icon>mdi-account</v-icon>
+              {{ room.people }}
+            </div>
           </v-card-text>
           <v-btn color="primary"
-                 class="add-button"
+                 class="custom-card-button"
                  dark
                  absolute
                  right
@@ -129,10 +128,10 @@ export default {
     enter(room) {
       this.$router.push(`/room/${room.id}`)
     },
-    async search() {
-      await this.$store.dispatch('Rooms/setKeyword', this.keyword)
-      this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e))
-    },
+    // async search() {
+    //   await this.$store.dispatch('Rooms/setKeyword', this.keyword)
+    //   this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e))
+    // },
     async addHandler() {
       if (this.topicName && this.roomName) {
         this.loading = true
@@ -157,6 +156,12 @@ export default {
 <style lang="scss" scoped>
 $gray: #f5f5f5;
 $secondaryMedium: #ffd402;
+.capitalize {
+  text-transform: capitalize
+};
+.v-dialog__content {
+  align-items: flex-start;
+}
 .rooms {
   height: 100%;
   background: $gray;
@@ -185,29 +190,26 @@ $secondaryMedium: #ffd402;
     clip-path: polygon(50% 0, 100% 0%, 100% 75%, 50% 45%);
   }
 }
-.card-deco {
-  min-height: 8rem;
+.custom-card {
+  text-transform: capitalize;
+  &-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &::before {
+    content: '';
+    background: $secondaryMedium;
+    width: 4.2rem;
+    height: 1rem;
+    position: absolute;
+    border-radius: 1.5rem;
+    transform: rotate(-20deg) translate(-10px, -6px);
+  }
 }
-.card-deco::before {
-  content: '';
-  background: #FFD402;
-  width: 4.2rem;
-  height: 1rem;
-  position: absolute;
-  border-radius: 1.5rem;
-  transform: rotate(-20deg) translate(-10px, -6px);
-}
-.add-button {
-  position: absolute;
-  top: 0;
-  transform: translateY(100%);
-}
-.v-dialog__content {
-  align-items: flex-start;
-}
-.search {
-  width: 20%;
-  margin: 0 auto;
-  margin-top: 2rem;
-}
+// .search {
+//   width: 20%;
+//   margin: 0 auto;
+//   margin-top: 2rem;
+// }
 </style>

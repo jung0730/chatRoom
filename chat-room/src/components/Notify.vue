@@ -8,8 +8,7 @@
         {{ errorMessage }}
       </div>
       <div class="custom-card-action">
-        <button class="custom-card-action-button"
-                @click="closeDialog">
+        <button @click="closeDialog">
           OK
         </button>
       </div>
@@ -57,7 +56,7 @@ $white: #ffffff;
   &-action {
     background-color: $primary;
     color: $white;
-    &-button {
+    button {
       width: 100%;
       height: 100%;
       outline: none;

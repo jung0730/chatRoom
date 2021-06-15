@@ -1,22 +1,21 @@
 <template>
   <v-container fluid
-               class="room-container">
+               class="room">
     <Navbar :page="'room'" />
-    <v-container class="chat-container">
+    <v-container class="chat">
       <div ref="messageArea"
-           class="message-area">
+           class="message">
         <v-row v-for="(item, idx) in messages"
                :key="idx">
           <v-col cols="6"
                  :offset="checkUser(item.nickname) ? 0 : 6">
-            <div :class="checkUser(item.nickname) ? 'left-dialog-box' : 'right-dialog-box'">
+            <div :class="checkUser(item.nickname) ? 'message-left-dialog' : 'message-right-dialog'">
               <v-tooltip v-if="item.nickname !== nickname"
                          top>
                 <template v-slot:activator="{on, attrs}">
                   <v-avatar color="secondaryDark"
                             size="56"
-                            class="mr-2"
-                            style="text-transform:capitalize"
+                            class="mr-2 message-avatar"
                             v-bind="attrs"
                             v-on="on">
                     {{ item.nickname.charAt(0) }}
@@ -24,11 +23,11 @@
                 </template>
                 <span> {{ item.nickname }} </span>
               </v-tooltip>
-              <div :class="checkUser(item.nickname) ? 'left-dialog-message' : 'right-dialog-message'">
+              <div :class="checkUser(item.nickname) ? 'message-left-dialog-text' : 'message-right-dialog-text'">
                 <template v-if="item.message.includes('data:image')">
                   <img :src="item.message">
                 </template>
-                <template>
+                <template v-else>
                   <span>
                     {{ item.message }}
                   </span>
@@ -110,53 +109,55 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.room-container {
+$gray: #f5f5f5;
+$darkGray: #d9d9d9;
+$white: #ffffff;
+$primary: #0DA0DB;
+$primaryDark: #097BBD;
+.room {
   height: 100%;
-  background: #f5f5f5;
+  background: $gray;
 }
-.chat-container {
+.chat {
   max-width: 64rem;
-  background: #ffffff;
+  background: white;
   opacity: 0.8;
   border-radius: 1rem;
   position: relative;
-  box-shadow: 20px 20px 50px #d9d9d9, -20px -20px 50px #ffffff;
+  box-shadow: 20px 20px 50px $darkGray, -20px -20px 50px $white;
 }
-.message-area {
+.message {
   overflow-x: hidden;
   height: calc(100vh - 200px);
-}
-.left-dialog, .right-dialog {
-  &-box {
-    display: flex;
+  img {
+    width: 15rem;
+    object-fit: cover;
   }
-  &-message {
-    color: #FFFFFF;
+  &-avatar {
+    text-transform: capitalize;
+  }
+  &-left-dialog {
+    align-items: baseline;
+    &-text {
+      background-color: $primaryDark;
+    }
+  }
+  &-right-dialog {
+    justify-content: flex-end;
+    &-text {
+      background-color: $primary;
+    }
+  }
+}
+.message-left-dialog, .message-right-dialog {
+  display: flex;
+  &-text {
+    color: $white;
     border-radius: 1rem;
     padding: 0.5rem;
     text-align: justify;
     min-width: 2rem;
     white-space: pre-wrap;
   }
-}
-.left-dialog {
-  &-box {
-    align-items: baseline;
-  }
-  &-message {
-    background-color: #097BBD;
-  }
-}
-.right-dialog {
-  &-box {
-    justify-content: flex-end;
-  }
-  &-message {
-    background-color: #0DA0DB;    
-  }
-}
-img {
-  width: 15rem;
-  object-fit: cover;
 }
 </style>
