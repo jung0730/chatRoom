@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col cols="auto" 
-           :class="page === 'list' ? 'ml-auto' : 'mr-auto'">
-      <v-btn v-if="page === 'list'"
+           :class="checkPage ? 'ml-auto' : 'mr-auto'">
+      <v-btn v-if="checkPage"
              icon
              color="primaryDark"
              @click="logout">
@@ -26,6 +26,9 @@ export default {
       type: String,
       required: true
     }
+  },
+  computed: {
+    checkPage() { return this.page === 'list' }
   },
   methods: {
     back() {

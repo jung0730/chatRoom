@@ -78,6 +78,18 @@ export default {
         this.previewFiles.splice(0)
       }
     },
+    checkSize(size, image) {
+      switch (true) {
+        case (size > 4):
+          return this.compressImg(image, 0.1)
+        case (size > 3):
+          return this.compressImg(image, 0.3)
+        case (size > 2):
+          return this.compressImg(image, 0.4)
+        default:
+          return this.compressImg(image, 0.5)
+      }
+    },
     drop(e) {
       e.dataTransfer.files.forEach(file => {
         if (file.type.includes('image')) {
@@ -87,16 +99,8 @@ export default {
             const image = new Image()
             image.src = reader.result
             image.onload = () => {
-              let compressImg = ''
-              if ((file.size / 1024 / 1024) > 4) {
-                compressImg = this.compressImg(image, 0.1)
-              } else if ((file.size / 1024 / 1024) > 3) {
-                compressImg = this.compressImg(image, 0.3)
-              } else if ((file.size / 1024 / 1024) > 2) {
-                compressImg = this.compressImg(image, 0.4)
-              } else {
-                compressImg = this.compressImg(image, 0.5)
-              }
+              const size = file.size / 1024 / 1024
+              const compressImg = this.checkSize(size, image)
               this.previewFiles.push(compressImg)
             }
           }
