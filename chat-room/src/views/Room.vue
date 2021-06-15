@@ -5,6 +5,12 @@
     <v-container class="chat">
       <div ref="messageArea"
            class="message">
+        <v-progress-circular v-if="isLoading"
+                             color="secondaryDark"
+                             indeterminate
+                             size="40"
+                             class="message-progress">
+        </v-progress-circular>
         <v-row v-for="(item, idx) in messages"
                :key="idx">
           <v-col cols="6"
@@ -60,7 +66,7 @@ export default {
       messages: [],
       message: '',
       roomWs: null,
-      isScroll: false
+      isLoading: false
     }
   },
   computed: {
@@ -83,15 +89,19 @@ export default {
       return nickname !== this.nickname
     },
     sendHandler(files) {
-      if (this.message) this.roomWs.send(JSON.stringify({ nickname: this.nickname, message: this.message }))
+      if (this.message) this.sendWs(this.message)
       if (files.length > 0) {
         files.forEach(file => {
-          this.roomWs.send(JSON.stringify({ nickname: this.nickname, message: file }))
+          this.isLoading = true
+          this.sendWs(file)
         })
       }
     },
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
+    },
+    sendWs(payload) {
+      this.roomWs.send(JSON.stringify({ nickname: this.nickname, message: payload }))
     },
     connectRoomWs() {
       this.roomWs = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/club/${this.$route.params.roomId}?userId=${this.id}`)
@@ -99,6 +109,7 @@ export default {
       this.roomWs.onmessage = (e) => {
         const data = JSON.parse(e.data)
         this.messages.push(data)
+        this.isLoading = false
         this.message = ''
         this.$nextTick(() => {
           this.scrollToBottom()
@@ -129,9 +140,16 @@ $primaryDark: #097BBD;
 .message {
   overflow-x: hidden;
   height: calc(100vh - 200px);
+  position: relative;
   img {
     width: 15rem;
     object-fit: cover;
+  }
+  &-progress {
+    position: sticky;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
   }
   &-avatar {
     text-transform: capitalize;
