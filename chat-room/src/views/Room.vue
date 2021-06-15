@@ -1,7 +1,7 @@
 <template>
   <v-container fluid
                class="room-container">
-    <Navbar :page="'room'"/>
+    <Navbar :page="'room'" />
     <v-container class="chat-container">
       <div ref="messageArea"
            class="message-area">
@@ -28,7 +28,7 @@
                 <template v-if="item.message.includes('data:image')">
                   <img :src="item.message">
                 </template>
-                <template v-else>
+                <template>
                   <span>
                     {{ item.message }}
                   </span>
@@ -60,7 +60,8 @@ export default {
     return {
       messages: [],
       message: '',
-      roomWs: null
+      roomWs: null,
+      isScroll: false
     }
   },
   computed: {
@@ -89,10 +90,6 @@ export default {
           this.roomWs.send(JSON.stringify({ nickname: this.nickname, message: file }))
         })
       }
-      this.message = ''
-      this.$nextTick(() => {
-        this.scrollToBottom()
-      })
     },
     scrollToBottom() {
       this.$refs.messageArea.scrollTop = this.$refs.messageArea.scrollHeight
@@ -103,6 +100,10 @@ export default {
       this.roomWs.onmessage = (e) => {
         const data = JSON.parse(e.data)
         this.messages.push(data)
+        this.message = ''
+        this.$nextTick(() => {
+          this.scrollToBottom()
+        })
       }
     }
   }
