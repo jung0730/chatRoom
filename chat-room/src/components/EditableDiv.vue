@@ -1,9 +1,18 @@
 <template>
-  <div class="outer-container">
-    <div class="preview-files">
+  <div class="editableDiv">
+    <div class="file">
       <div v-for="(file, idx) in previewFiles"
-           :key="idx">
-        <img :src="file">
+           :key="idx"
+           class="file-type">
+        <img :src="file"
+             class="file-img">
+        <v-btn icon
+               absolute
+               class="file-btn"
+               color="secondaryDark"
+               @click="deleteImg(idx)">
+          <v-icon>mdi-close-circle</v-icon>
+        </v-btn>
       </div>
     </div>
     <div ref="contentEditable"
@@ -42,6 +51,9 @@ export default {
     }
   },
   methods: {
+    deleteImg(idx) {
+      this.previewFiles.splice(idx)
+    },
     changeText() {
       this.$emit('input', this.$refs.contentEditable.textContent)
     },
@@ -100,29 +112,37 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.outer-container {
-  border: 2px solid #097BBD;
+$primaryDark: #097BBD;
+.editableDiv {
+  border: 2px solid $primaryDark;
   border-radius: 0.5rem;
   padding: 0.5rem;
 }
 .message {
   width: 100%;
-  height: 80px;
+  height: 5rem;
   outline: none;
   white-space: pre-wrap;
   overflow-x: hidden;
+  &:empty::before {
+    content: attr(data-placeholder);
+    color: gray;
+  }
 }
-.message:empty::before {
-  content: attr(data-placeholder);
-  color: gray;
-}
-.preview-files {
+.file {
   display: flex;
-}
-img {
-  width: 3rem;
-  height: 3rem;
-  object-fit: cover;
-  margin-right: 0.5rem;
+  &-type {
+    position: relative;
+  }
+  &-img {
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    margin-right: 0.5rem;
+  }
+  &-btn {
+    top: -0.625rem;
+    right: -0.625rem;
+  }
 }
 </style>
