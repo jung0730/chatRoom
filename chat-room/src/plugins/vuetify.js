@@ -6,16 +6,14 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
-        primary: '#0DA0D8',
-        primaryDark: '#097BBD',
+        primary: '#0da0d8',
+        primaryDark: '#097bbd',
+        primaryLight: '#25a9db',
         secondary: '#fdf460',
-        secondaryDark: '#EFBA05',
-        accent: '#82B1FF',
-        error: '#B00020',
-        info: '#2196F3',
-        success: '#4CAF50',
-        warning: '#FFC107',
-        normal: '#573D01'
+        secondaryMedium: '#ffd402',
+        secondaryDark: '#efba05',
+        gray: '#f5f5f5',
+        white: '#ffffff'
       }
     }
   },

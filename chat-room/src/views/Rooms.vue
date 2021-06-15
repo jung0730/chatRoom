@@ -1,6 +1,6 @@
 <template>
   <v-container fluid
-               class="rooms-container">
+               class="rooms">
     <Navbar :page="'list'"/>
     <v-row justify="center">
       <p style="text-transform: capitalize">
@@ -155,16 +155,18 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.rooms-container {
+$gray: #f5f5f5;
+$secondaryMedium: #ffd402;
+.rooms {
   height: 100%;
-  background: #f5f5f5;
+  background: $gray;
   background-image: url('~@/assets/rooms.svg');
   background-repeat: no-repeat;
   background-position: bottom left;
   background-attachment: fixed;
   background-size: clamp(25rem, 45% , 50rem);
   &::before, &::after {
-    background: #FFD402;
+    background: $secondaryMedium;
     content: '';
     position: absolute;
   }

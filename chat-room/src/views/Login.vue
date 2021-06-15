@@ -1,6 +1,6 @@
 <template>
   <v-container fluid
-               class="login-container">
+               class="login">
     <v-row justify="center"
            class="mt-16">
       <img src="~@/assets/login.svg">
@@ -59,7 +59,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.login-container {
+.login {
   height: 100%;
   background: linear-gradient(to bottom right, #ffffff 55%, #0da0d8);
 }

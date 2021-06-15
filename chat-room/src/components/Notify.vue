@@ -38,6 +38,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+$primary: #0da0d8;
+$primary-light: #25a9db;
+$gray: #f5f5f5;
+$white: #ffffff;
 .custom-card {
   width: 25rem;
   text-align: center;
@@ -47,12 +51,12 @@ export default {
     padding: 0.5rem;
   }
   &-message {
-    color: gray;
+    color: $gray;
     margin-bottom: 1rem;
   }
   &-action {
-    background-color: #0DA0D8;
-    color: white;
+    background-color: $primary;
+    color: $white;
     &-button {
       width: 100%;
       height: 100%;
@@ -60,7 +64,7 @@ export default {
       font-size: 1.2rem;
       padding: 0.5rem;
       &:hover {
-        background-color: #25a9db;
+        background-color: $primary-light;
       }
     }
   }

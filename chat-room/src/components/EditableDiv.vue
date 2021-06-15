@@ -112,7 +112,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$primaryDark: #097BBD;
+$primaryDark: #097bbd;
 .editableDiv {
   border: 2px solid $primaryDark;
   border-radius: 0.5rem;
