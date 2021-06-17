@@ -103,16 +103,18 @@ export default {
       this.roomWs.send(JSON.stringify({ nickname: this.nickname, message: payload }))
     },
     connectRoomWs() {
-      this.roomWs = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/club/${this.$route.params.roomId}?userId=${this.id}`)
-      this.roomWs.onopen = () => { console.log('room connected') }
-      this.roomWs.onmessage = (e) => {
-        const data = JSON.parse(e.data)
-        this.messages.push(data)
-        this.isLoading = false
-        this.message = ''
-        this.$nextTick(() => {
-          this.scrollToBottom()
-        })
+      if ("WebSocket" in window) {
+        this.roomWs = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/club/${this.$route.params.roomId}?userId=${this.id}`)
+        this.roomWs.onopen = () => { console.log('room connected') }
+        this.roomWs.onmessage = (e) => {
+          const data = JSON.parse(e.data)
+          this.messages.push(data)
+          this.isLoading = false
+          this.message = ''
+          this.$nextTick(() => {
+            this.scrollToBottom()
+          })
+        }
       }
     }
   }

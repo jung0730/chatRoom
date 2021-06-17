@@ -27,13 +27,15 @@ export default {
   },
   methods: {
     connectWs() {
-      this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/user/${this.userId}`)
-      this.ws.onopen = () => { console.log('user connected') }
-      this.ws.onmessage = (e) => {
-        const data = JSON.parse(e.data)
-        if (data.error.message) this.$notify(data.error.message)
+      if ("WebSocket" in window) {
+        this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/user/${this.userId}`)
+        this.ws.onopen = () => { console.log('user connected') }
+        this.ws.onmessage = (e) => {
+          const data = JSON.parse(e.data)
+          if (data.error.message) this.$notify(data.error.message)
+        }
+        this.ws.onerror = () => { console.log('user error') }
       }
-      this.ws.onerror = () => { console.log('user error') }
     }
   }
 }
