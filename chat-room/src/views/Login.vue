@@ -47,7 +47,7 @@ export default {
             nickname: this.userName
           })
           this.$router.push('/rooms')
-        } catch {
+        } catch(e) {
           this.$notify(e)
         } finally {
           this.userName = ''
