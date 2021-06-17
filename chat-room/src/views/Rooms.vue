@@ -1,7 +1,7 @@
 <template>
   <v-container fluid
                class="rooms">
-    <Navbar :page="'list'"/>
+    <Navbar :page="'list'" />
     <v-row justify="center">
       <p class="capitalize">
         Hello, {{ nickname }}
@@ -56,7 +56,7 @@
     </v-row>
     <v-row justify="center"
            class="search">
-      <v-col cols="6"
+      <v-col cols="5"
              sm="4"
              md="2">
         <v-text-field v-model="keyword"
@@ -143,8 +143,8 @@ export default {
         try {
           this.loading = true
           await this.$store.dispatch('Rooms/addRoom', {
-          topic: this.topicName,
-          clubName: this.roomName
+            topic: this.topicName,
+            clubName: this.roomName
           })
           this.$router.push(`/room/${this.createdRoom.id}`)
         } 
