@@ -8,7 +8,8 @@ const state = {
     page: 1,
     limit: 20
   },
-  createdRoom: {}
+  createdRoom: {},
+  total: 0
 }
 const RAW_STATE = { ...state }
 const mutations = {
@@ -18,7 +19,8 @@ const mutations = {
     })
   },
   SET_LIST(state, data) {
-    state.rooms = data.map(el => {
+    // todo
+    const items = state.rooms = data.map(el => {
       return {
         host: el.owner?.nickname || '',
         hostId: el.owner?.id || '',
@@ -29,6 +31,8 @@ const mutations = {
         id: el.id || ''
       }
     })
+    // state.total = 0
+    state.rooms = [...state.rooms, ...items]
   },
   SET_ROOM_NAME(state, data) {
     state.createdRoom =  {
@@ -40,11 +44,15 @@ const mutations = {
   },
   SET_KEYWORD(state, val) {
     state.condition.name = val
+  },
+  SET_PAGE(state, page) {
+    state.condition.page = page
   }
 }
 const actions = {
   reset({ commit }) { commit('RESET', RAW_STATE) },
   setKeyword: ({ commit }, val) => { commit('SET_KEYWORD', val) },
+  setPage: async ({ commit }, page) => { commit('SET_PAGE', page) },
   getRooms: async ({ commit, state, dispatch }) => {
     try {
       const parameter = []
@@ -54,6 +62,7 @@ const actions = {
       if (state.condition.limit !== 20) parameter.push({key: 'limit', value: state.condition.limit })
       const { data } = await getRooms(parameter)
       if (data) {
+        // todo
         commit('SET_LIST', data.data)
       } else {
         throw new error('error')

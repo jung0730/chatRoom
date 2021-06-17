@@ -2,6 +2,7 @@
   <v-container fluid
                class="rooms">
     <Navbar :page="'list'" />
+    <div class="observer" />
     <v-row justify="center">
       <p class="capitalize">
         Hello, {{ nickname }}
@@ -100,15 +101,18 @@
         </v-card>
       </v-col>
     </v-row>
+    <observer @intersect="intersected" />
   </v-container>
 </template>
 <script>
 import Navbar from '@/components/Navbar'
+import Observer from '@/components/Observer'
 import { mapState } from 'vuex'
 export default {
   name: 'Rooms',
   components: {
-    Navbar
+    Navbar,
+    Observer
   },
   data() {
     return {
@@ -116,13 +120,15 @@ export default {
       roomName: '',
       isShowDialog: false,
       keyword: '',
-      loading: false
+      loading: false,
+      observer: null,
+      page: 1
     }
   },
   computed: {
     codes() { return this.$store.state.CodeTable.codes?.clubs_topic || [] },
     topics() { return this.codes.map(el => el.Option) || [] },
-    ...mapState('Rooms', ['rooms', 'createdRoom']),
+    ...mapState('Rooms', ['rooms', 'createdRoom', 'total', 'condition']),
     ...mapState('Environment', ['nickname'])
   },
   async created() {
@@ -131,6 +137,12 @@ export default {
     this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic'])
   },
   methods: {
+    intersected() {
+      if (this.condition.page <= this.total) {
+        this.$store.dispatch('Rooms/setPage', this.page += 1)
+        this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e))
+      }
+    },
     enter(room) {
       this.$router.push(`/room/${room.id}`)
     },
@@ -215,5 +227,8 @@ $secondaryMedium: #ffd402;
     border-radius: 1.5rem;
     transform: rotate(-20deg) translate(-10px, -6px);
   }
+}
+.observer { 
+  height: 1px;
 }
 </style>
