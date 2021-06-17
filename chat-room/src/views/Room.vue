@@ -9,8 +9,7 @@
                              color="secondaryDark"
                              indeterminate
                              size="40"
-                             class="message-progress">
-        </v-progress-circular>
+                             class="message-progress" />
         <v-row v-for="(item, idx) in messages"
                :key="idx">
           <v-col cols="6"
@@ -103,7 +102,7 @@ export default {
       this.roomWs.send(JSON.stringify({ nickname: this.nickname, message: payload }))
     },
     connectRoomWs() {
-      if ("WebSocket" in window) {
+      if ('WebSocket' in window) {
         this.roomWs = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/club/${this.$route.params.roomId}?userId=${this.id}`)
         this.roomWs.onopen = () => { console.log('room connected') }
         this.roomWs.onmessage = (e) => {

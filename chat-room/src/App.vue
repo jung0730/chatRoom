@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     connectWs() {
-      if ("WebSocket" in window) {
+      if ('WebSocket' in window) {
         this.ws = new WebSocket(`ws://104.214.48.227:8080/api/v1/ws/user/${this.userId}`)
         this.ws.onopen = () => { console.log('user connected') }
         this.ws.onmessage = (e) => {
