@@ -41,17 +41,18 @@ export default {
   methods: {
     async login() {
       if (this.userName) {
-        this.isLoading = true
-        await this.$store.dispatch('Environment/login', {
-          nickname: this.userName
-        }).then(data => {
+        try {
+          this.isLoading = true
+          await this.$store.dispatch('Environment/login', {
+            nickname: this.userName
+          })
           this.$router.push('/rooms')
-        }).catch(e => {
+        } catch {
           this.$notify(e)
-        }).finally(() => {
+        } finally {
           this.userName = ''
           this.isLoading = false
-        })
+        }
       }
     }
   }

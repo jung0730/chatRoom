@@ -140,20 +140,23 @@ export default {
     },
     async addHandler() {
       if (this.topicName && this.roomName) {
-        this.loading = true
-        await this.$store.dispatch('Rooms/addRoom', {
+        try {
+          this.loading = true
+          await this.$store.dispatch('Rooms/addRoom', {
           topic: this.topicName,
           clubName: this.roomName
-        }).then(data => {
+          })
           this.$router.push(`/room/${this.createdRoom.id}`)
-        }).catch(e => {
+        } 
+        catch(e) {
           this.$notify(e)
-        }).finally(() => {
+        }
+        finally {
           this.topicName = ''
           this.roomName = ''
           this.loading = false
           this.isShowDialog = false
-        })
+        }
       }
     }
   }
