@@ -1,8 +1,7 @@
 <template>
   <v-container fluid
                class="login">
-    <v-row justify="center"
-           class="mt-16">
+    <v-row justify="center">
       <img src="~@/assets/login.svg">
     </v-row>
     <v-row justify="center">
@@ -11,18 +10,18 @@
              offset-md="1">
         <v-text-field v-model.trim="userName"
                       placeholder="Please enter your username"
-                      outlined
-                      clearable
+                      hide-details
                       data-test="userName"
                       @keyup.enter.native="login" />
       </v-col>
       <v-col cols="2">
-        <v-btn class="mt-1 ml-1"
+        <v-btn class="mt-2"
                color="primary"
-               large
+               medium
                depressed
-               :disabled="isLoading || !userName"
+               :disabled="!userName"
                data-test="btn"
+               :loading="isLoading"
                @click.prevent="login">
           Login
         </v-btn>

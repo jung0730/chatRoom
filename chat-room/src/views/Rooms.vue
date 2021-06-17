@@ -26,6 +26,7 @@
               <v-select v-model="topicName"
                         :items="topics"
                         class="mt-6"
+                        hide-details
                         label="Topic Category"
                         data-test="topic" />
             </v-row>
@@ -34,12 +35,13 @@
                 <v-text-field v-model.trim="roomName"
                               label="Room Name"
                               data-test="roomName"
-                              clearable
+                              hide-details
                               @keyup.enter.native="addHandler" />
               </v-col>
               <v-col cols="4">
                 <v-btn color="primary"
-                       large
+                       class="mt-2"
+                       medium
                        depressed
                        data-test="createBtn"
                        :loading="loading"
@@ -52,13 +54,17 @@
         </v-card>
       </v-dialog>
     </v-row>
-    <!--<v-row justify="center"
+    <v-row justify="center"
            class="search">
-      <v-text-field v-model="keyword"
-                    label="Search"
-                    append-icon="mdi-magnify"
-                    @keyup.enter.native="search" />
-    </v-row> -->
+      <v-col cols="6"
+             sm="4"
+             md="2">
+        <v-text-field v-model="keyword"
+                      append-icon="mdi-magnify"
+                      @click:append="search"
+                      @keyup.enter.native="search" />
+      </v-col>
+    </v-row>
     <v-row justify="center"
            class="mt-8">
       <v-col cols="10"
@@ -128,10 +134,10 @@ export default {
     enter(room) {
       this.$router.push(`/room/${room.id}`)
     },
-    // async search() {
-    //   await this.$store.dispatch('Rooms/setKeyword', this.keyword)
-    //   this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e))
-    // },
+    async search() {
+      await this.$store.dispatch('Rooms/setKeyword', this.keyword)
+      this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e))
+    },
     async addHandler() {
       if (this.topicName && this.roomName) {
         this.loading = true
@@ -207,9 +213,4 @@ $secondaryMedium: #ffd402;
     transform: rotate(-20deg) translate(-10px, -6px);
   }
 }
-// .search {
-//   width: 20%;
-//   margin: 0 auto;
-//   margin-top: 2rem;
-// }
 </style>
