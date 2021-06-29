@@ -1,12 +1,13 @@
 <template>
   <v-container fluid
                class="login">
-    <v-row justify="center">
+    <v-row justify="center"
+           class="mt-10">
       <img src="~@/assets/login.svg">
     </v-row>
     <v-row justify="center">
-      <v-col cols="8"
-             md="4"
+      <v-col cols="6"
+             md="3"
              offset-md="1">
         <v-text-field v-model.trim="userName"
                       placeholder="Please enter your username"
