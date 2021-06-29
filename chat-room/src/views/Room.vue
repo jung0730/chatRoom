@@ -70,12 +70,19 @@ export default {
     }
   },
   computed: {
-    ...mapState('Environment', ['id', 'nickname']) 
+    ...mapState('Environment', ['id', 'nickname', 'notification']) 
+  },
+  watch: {
+    notification(newVal, oldVal) {
+      if (newVal) {
+        this.redirect(newVal)
+        this.$store.dispatch('Environment/setNotification', '')
+      }
+    }
   },
   async created() {
     await this.$store.dispatch('Room/getRoom', this.$route.params.roomId).catch(e => {
-      this.$notify(e)
-      this.$router.go(-1)
+      this.redirect(e)
     })
     this.connectRoomWs()
   },
@@ -83,6 +90,10 @@ export default {
     this.roomWs.close()
   },
   methods: {
+    redirect(msg) {
+      this.$notify(msg)
+      this.$router.go(-1)
+    },
     checkUser(nickname) {
       return nickname !== this.nickname
     },

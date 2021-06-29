@@ -5,7 +5,8 @@ import axios from 'axios'
 const state = {
   uid: '',
   nickname: '',
-  id: ''
+  id: '',
+  notification: ''
 }
 const RAW_STATE = { ...state }
 const mutations = {
@@ -22,6 +23,9 @@ const mutations = {
   },
   SET_ID(state, id) {
     state.id = id
+  },
+  SET_NOTIFICATION(state, message) {
+    state.notification = message
   }
 }
 const actions = {
@@ -57,7 +61,8 @@ const actions = {
     } catch(e) {
       throw e.response.data.error.message
     }
-  }
+  },
+  setNotification: ({ commit }, val) => { commit('SET_NOTIFICATION', val) }
 }
 
 export default {

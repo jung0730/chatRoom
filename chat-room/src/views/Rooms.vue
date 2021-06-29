@@ -84,7 +84,7 @@
             Hosted by {{ room.host }}
             <div>
               <v-icon>mdi-account</v-icon>
-              {{ room.people }}
+              {{ room.number }}
             </div>
           </v-card-text>
           <v-btn color="primary"

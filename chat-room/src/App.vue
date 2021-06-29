@@ -32,7 +32,8 @@ export default {
         this.ws.onopen = () => { console.log('user connected') }
         this.ws.onmessage = (e) => {
           const data = JSON.parse(e.data)
-          if (data.error.message) this.$notify(data.error.message)
+          if (data.action === 'leave') this.$store.dispatch('Environment/setNotification', data.message)
+          if (data.error) this.$notify(data.error.message)
         }
         this.ws.onerror = () => { console.log('user error') }
       }
