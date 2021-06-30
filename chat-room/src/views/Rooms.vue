@@ -126,9 +126,9 @@ export default {
     ...mapState('Environment', ['nickname'])
   },
   async created() {
-    await this.$store.dispatch('Room/leave')
+    await this.$store.dispatch('Room/leave').catch(() => null)
     this.$store.dispatch('Rooms/getRooms').catch(e => this.$notify(e))
-    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic'])
+    this.$store.dispatch('CodeTable/fetchCodes', ['clubs_topic']).catch(() => null)
   },
   methods: {
     enter(room) {
