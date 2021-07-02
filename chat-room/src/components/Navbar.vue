@@ -1,10 +1,12 @@
 <template>
   <v-row>
-    <v-col cols="auto" 
+    <v-col cols="auto"
+           data-test="navbar"
            :class="checkPage ? 'ml-auto' : 'mr-auto'">
       <v-btn v-if="checkPage"
              icon
              color="primaryDark"
+             data-test="btn"
              @click="logout">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
@@ -24,7 +26,7 @@ export default {
   props: {
     page: {
       type: String,
-      required: true
+      default: 'list'
     }
   },
   computed: {
