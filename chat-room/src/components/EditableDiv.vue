@@ -3,7 +3,8 @@
     <div class="file">
       <div v-for="(file, idx) in previewFiles"
            :key="idx">
-        <img :src="file">
+        <img :src="file"
+             data-test="img">
         <v-btn icon
                absolute
                class="file-btn"
@@ -14,6 +15,7 @@
       </div>
     </div>
     <div ref="contentEditable"
+         data-test="editable"
          contenteditable="true"
          spellcheck="true"
          role="textbox"
