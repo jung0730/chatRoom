@@ -3,7 +3,7 @@
                class="login">
     <v-row justify="center"
            class="mt-10">
-      <img src="~@/assets/login.svg">
+      <img src="~@/assets/img/login.svg">
     </v-row>
     <v-row justify="center">
       <v-col cols="6"

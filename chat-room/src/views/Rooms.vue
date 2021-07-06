@@ -174,7 +174,7 @@ $secondaryMedium: #ffd402;
 .rooms {
   height: 100%;
   background: $gray;
-  background-image: url('~@/assets/rooms.svg');
+  background-image: url('~@/assets/img/rooms.svg');
   background-repeat: no-repeat;
   background-position: bottom left;
   background-attachment: fixed;
