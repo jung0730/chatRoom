@@ -106,6 +106,8 @@ export default {
               this.previewFiles.push(compressImg)
             }
           }
+        } else {
+          this.$notify('format not supported currently')
         }
       })
     },
