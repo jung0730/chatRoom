@@ -19,7 +19,7 @@
          contenteditable="true"
          spellcheck="true"
          role="textbox"
-         data-placeholder="Enter messages..."
+         data-placeholder="Enter messages or drag images..."
          class="message"
          :value="value"
          @keydown.enter="captureEnterEvent"
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     deleteImg(idx) {
-      this.previewFiles.splice(idx)
+      this.previewFiles.splice(idx, 1)
     },
     changeText() {
       this.$emit('input', this.$refs.contentEditable.textContent)
@@ -137,6 +137,7 @@ $primaryDark: #097bbd;
 }
 .file {
   display: flex;
+  flex-wrap: wrap;
   > div {
     position: relative;
     > img {

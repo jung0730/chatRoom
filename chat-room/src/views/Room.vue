@@ -166,7 +166,6 @@ $primaryDark: #097BBD;
     text-transform: capitalize;
   }
   &-left-dialog {
-    align-items: baseline;
     &-text {
       background-color: $primaryDark;
     }
@@ -180,6 +179,7 @@ $primaryDark: #097BBD;
 }
 .message-left-dialog, .message-right-dialog {
   display: flex;
+  align-items: center;
   &-text {
     color: $white;
     border-radius: 1rem;
