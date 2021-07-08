@@ -24,12 +24,17 @@ const routes = [
     path: '/room/:roomId',
     name: 'Room',
     component: () => import(/* webpackChunkName: "Room" */ '../views/Room.vue')
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: () => import(/* webpackChunkName: "Error" */ '../views/Error.vue')
+  },
+  {
+    path: '*',
+    redirect: { name: 'NotFound' },
+    component: () => import(/* webpackChunkName: "Error" */ '../views/Error.vue')
   }
-  // {
-  //   path: '*',
-  //   name: 'NotFound',
-  //   component: Error
-  // }
 ]
 
 const router = new VueRouter({
