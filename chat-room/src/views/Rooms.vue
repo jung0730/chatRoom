@@ -163,8 +163,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$gray: #f5f5f5;
-$secondaryMedium: #ffd402;
 .capitalize {
   text-transform: capitalize
 };

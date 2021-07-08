@@ -131,11 +131,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$gray: #f5f5f5;
-$darkGray: #d9d9d9;
-$white: #ffffff;
-$primary: #0DA0DB;
-$primaryDark: #097BBD;
 .room {
   height: 100%;
   background: $gray;

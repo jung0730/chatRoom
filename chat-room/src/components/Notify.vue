@@ -37,10 +37,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$primary: #0da0d8;
-$primaryLight: #25a9db;
-$primaryDark: #097bbd;
-$white: #ffffff;
 .custom-card {
   width: 25rem;
   text-align: center;
